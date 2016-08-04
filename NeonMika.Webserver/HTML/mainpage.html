@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<title>INEX Trigger Configuration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/w3.css">
+<link rel="stylesheet" href="js/jquery-ui.min.css">
+<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script> 
+<style>
+.config-tab {display:none;}
+.tab-bold {font-weight: bold;}
+.input-username, .input-password,.input-static-ip, .input-timeoffset, .input-ntp,.input-gateway, .input-network-mask {width: 100%;}
+.dhcp-enabled,.dhcp-disabled {
+    border-color: darkgray;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.submit-form {
+	border-color: red;
+    border-width: 2px;
+    border-style: solid;
+}
+
+/* Vertical Tabs Style =================================== */
+  .ui-tabs-vertical { width: 70em; }
+  .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 20em; }
+  .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+  .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+  .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; }
+  .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 47em;}
+  
+  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
+  {
+      border: 3px solid #525050 !important; 
+  }
+  
+  .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
+  {
+      color: #ff0000 !important;
+	  font-weight: bolder !important;
+  }
+  /*
+  .ui-tabs .ui-tabs-nav li.ui-tabs-active
+  {
+	margin-left: 2px !important
+  }
+ */
+/* End of vertical tabs style ================================ */
+
+.disable-trigger
+{
+	opacity: 0.5;
+	
+}
+.enable-trigger
+{
+	opacity: 1;
+}
+
+</style>
+<body class="w3-container">
+
+<h2>INEX Lidar Trigger Configuration</h2>
+
+<div class="w3-row">
+  <a href="#" onclick="openConfigTab(event, 'network');">
+    <div id=div-network class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">System and Network Configuration</div>
+  </a>
+  <a href="#" onclick="openConfigTab(event, 'distance');">
+    <div id=div-distance class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Trigger and Distance Configuration</div>
+  </a>
+  <a href="#" onclick="openConfigTab(event, 'upload');">
+    <div id=div-upload class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Firmware Upload</div>
+  </a>
+</div>
+
+<div id="network" class="w3-container config-tab">
+  <h2>System and Network Configuration </h2>
+	<div class="w3-row">
+		<div class="w3-col  s1 m1 l1  w3-center">
+				<p>Username</p>
+		</div>
+		<div class="w3-col  s1 m1 l1  w3-center ">
+			<p>
+				<input type="text" name="username" class="input-username">
+			</p>
+		</div>
+		<div class="w3-col  s1 m1 l1  w3-center">
+			<p>Password</p>
+		</div>
+		<div class="w3-col  s1 m1 l1  w3-center">
+			<p>
+				<input type="password" name="password" class="input-password">
+			</p>
+		</div>
+		<div class="w3-col  s8 m8 l8  w3-center">
+			<p></p>
+		</div>		
+	</div>
+	<div id="div-dhcp-enable">
+		<div class="w3-row">
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>DHCP</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id="dhcp-value" type="checkbox" name="dhcp" onchange="dhcpChange()" >
+					</p>
+			</div>
+			<div class="w3-col  s10 m10 l10  w3-center">
+				<p></p>
+			</div>			
+		</div>
+	</div>
+	<div id=dhcp-disabled class=dhcp-disabled>
+		<div class="w3-row">
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>Static IP</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id=input-static-ip type="text" name="static-ip" class="input-static-ip">
+					</p>
+			</div>
+			<div class="w3-col  s10 m10 l10  w3-center">
+				<p></p>
+			</div>			
+		</div>
+		<div class="w3-row">
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>Network Mask</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id=input-network-mask type="text" name="network-mask" class="input-network-mask">
+					</p>
+			</div>
+			<div class="w3-col  s10 m10 l10  w3-center">
+				<p></p>
+			</div>			
+		</div>	
+		<div class="w3-row">
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>Gateway</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id=input-gateway type="text" name="Gateway" class="input-gateway">
+					</p>
+			</div>
+			<div class="w3-col  s10 m10 l10  w3-center">
+				<p></p>
+			</div>			
+		</div>
+	</div>
+	<div class="w3-row">
+		<div class="w3-col  s1 m1 l1  w3-center">
+				<p>NTP Server IP</p>
+		</div>
+		<div class="w3-col  s1 m1 l1  w3-center">
+				<p>
+					<input id=input-ntp type="text" name="ntp" class="input-ntp">
+				</p>
+		</div>
+		<div class="w3-col  s10 m10 l10  w3-center">
+			<p></p>
+		</div>			
+	</div>
+	<div class="w3-row">
+		<div class="w3-col  s1 m1 l1  w3-center">
+				<p>Time Zone Offset</p>
+		</div>
+		<div class="w3-col  s1 m1 l1  w3-center">
+				<p>
+					<input id=input-timeoffset type="text" name="timeoffset" class="input-timeoffset">
+				</p>
+		</div>
+		<div class="w3-col  s10 m10 l10  w3-center">
+			<p></p>
+		</div>			
+	</div>
+	
+	<div class="submit-form">
+		<div class="w3-row">
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>Submit Configuration</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id="submit-network" type="submit" value="Submit">
+					</p>
+			</div>
+			<div class="w3-col  s10 m10 l10  w3-center">
+				<p></p>
+			</div>			
+		</div>	
+	</div>	
+</div>
+
+<div id="distance" class="w3-container config-tab">
+	 <div id="tabs">
+  <ul>
+    <li><a href="#trigger-setup">Trigger Distance Setup</a></li>
+    <li><a href="#trigger-configuration">Trigger Configuration</a></li>
+  </ul>
+  <div id="trigger-setup">
+    <h2>Trigger Distance Setup</h2>
+    <p>
+		<div class="w3-row">
+			<div class="w3-col  s6 m6 l6  w3-center">
+					<p>Press Start or Stop For Setup</p>
+			</div>
+			<div class="w3-col  s6 m6 l6  w3-center">
+					<p>
+						<input id=start-stop-setup iz-setup-status="true" type="button" value="Start Setup">
+					</p>
+			</div>	
+		</div>
+		<div class="w3-row">
+			<div class="w3-col  s3 m3 l3  w3-center">
+				<p>Distance without vehicle</p>
+			</div>
+			<div  class="w3-col  s3 m3 l3  w3-center">
+				<p>
+					<input id="no-vehicle" type="text" name="no-vehicle" readonly size="10">
+				</p>
+			</div>
+			<div  class="w3-col  s2 m2 l2  w3-center">
+				<p>
+					<input id="submit-no-vehicle" type="submit" value="Set Distance">
+				</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center"><p>-></p></div>
+			<div  class="w3-col  s2 m2 l2  w3-center">
+				<p>
+					<input id="no-vehicle-set" type="text" name="no-vehicle" readonly size="10">
+				</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center"><p></p></div>
+		</div>
+	</p>
+  </div>
+  <div id="trigger-configuration">
+    <h2>Trigger Configuration</h2>
+    <div class="w3-row">
+
+		<div  class="w3-col  s4 m4 l4  w3-center enable-trigger">
+				<p id="trigger-disable-text-ip">
+					ALPR Camera IP address
+				</p>
+		</div>
+		<div class="w3-col  s4 m4 l4  w3-center enable-trigger">
+				<p>
+					<input id="trigger-disable-param-ip" type="text" name="camera-ip" class="camera-ip">
+				</p>
+		</div>
+		<div  class="w3-col  s3 m3 l3  w3-center">
+				<p>
+					Disable TCP/IP Trigger
+				</p>
+		</div>
+		<div  class="w3-col  s1 m1 l1  w3-center">
+				<p>
+					<input id="trigger-disable-ip" type="checkbox" name="vehicle" value="ip">
+				</p>
+		</div>		
+	</div>
+	<div class="w3-row">
+
+		<div  class="w3-col  s4 m4 l4  w3-center enable-trigger">
+				<p id="trigger-disable-text-ttl">
+					Trigger Length in ms
+				</p>
+		</div>
+		<div class="w3-col  s4 m4 l4  w3-center enable-trigger">
+				<p>
+					<input id="trigger-disable-param-ttl" type="text" name="trigger-length" class="trigger-length" size="5">
+				</p>
+		</div>
+		<div  class="w3-col  s3 m3 l3  w3-center">
+				<p >
+					Disable TTL Trigger
+				</p>
+		</div>
+		<div  class="w3-col  s1 m1 l1  w3-center">
+				<p>
+					<input id="trigger-disable-ttl" type="checkbox" name="vehicle" value="ttl">
+				</p>
+		</div>		
+	</div>
+	<div class="w3-row">
+
+		<div  class="w3-col  s4 m4 l4  w3-center enable-trigger">
+				<p id="trigger-disable-text-stop">
+					Time to Consider Stopped Vehicle in ms
+				</p>
+		</div>
+		<div class="w3-col  s4 m4 l4  w3-center enable-trigger">
+				<p>
+					<input id="trigger-disable-param-stop" type="text" name="stop-length" class="stop-length" size="5">
+				</p>
+		</div>
+		<div  class="w3-col  s3 m3 l3  w3-center">
+				<p >
+					Disable Stop Trigger
+				</p>
+		</div>
+		<div  class="w3-col  s1 m1 l1  w3-center">
+				<p>
+					<input id="trigger-disable-stop" type="checkbox" name="vehicle" value="stop">
+				</p>
+		</div>		
+	</div>
+  </div>
+
+	</div>
+</div>
+
+<div id="upload" class="w3-container config-tab">
+  <h2>Firmware Upload</h2>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
+<script>
+$(document).ready(function(){ 
+	openConfigTab(event, "network");
+	dhcpChange();
+	// add vertical tabs
+	$('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+	$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	
+	// Add Event Handlers 
+	$("#trigger-disable-ip").click(disableTrigger);
+	$("#submit-no-vehicle").click(submitNoVehicle);
+	$("#trigger-disable-ttl").click(disableTrigger);
+	$("#start-stop-setup").click(startStopSetup);
+	$("#submit-network").click(submitNetwork);
+	$("#trigger-disable-stop").click(disableTrigger);
+}) 
+
+function ValidateIPaddress(ipaddress)   
+{  
+ if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))  
+  {  
+    return (true)  
+  }  
+  alert("You have entered an invalid IP address!")  
+  return (false)  
+}  
+
+function submitNetwork()
+{
+	var _inputCheck = true;
+	if ( ValidateIPaddress ($("#input-static-ip").val()) == false )
+		return;
+	if ( ValidateIPaddress ($("#input-network-mask").val()) == false )
+		return;
+	if ( ValidateIPaddress ($("#input-gateway").val()) == false )
+		return;
+	if ( ValidateIPaddress ($("#input-ntp").val()) == false )
+		return;
+	console.debug("networks submit");
+}
+function dhcpChange() {
+	if ($("#dhcp-value").prop("checked") == true )
+	{
+		$("#dhcp-disabled").hide();
+		$("#div-dhcp-enable").addClass("dhcp-enabled");
+	}
+	else
+	{
+		$("#dhcp-disabled").show();
+		$("#div-dhcp-enable").removeClass("dhcp-enabled");
+	}
+}
+
+function openConfigTab(event, tabName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("config-tab");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+	 tablinks[i].className = tablinks[i].className.replace(" tab-bold", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  document.getElementById("div-"+tabName).className += " w3-border-red";
+  document.getElementById("div-"+tabName).className += " tab-bold";
+}
+
+function submitNoVehicle()
+{
+}
+
+function disableTrigger(param)
+{
+	var e = this;
+	if ($("#trigger-disable-"+e.value).is(':checked'))
+	{
+		$("#trigger-disable-param-"+e.value).removeClass("enable-trigger");
+		$("#trigger-disable-param-"+e.value).addClass("disable-trigger");
+		$("#trigger-disable-text-"+e.value).removeClass("enable-trigger");
+		$("#trigger-disable-text-"+e.value).addClass("disable-trigger");
+		$("#trigger-disable-param-"+e.value).prop('disabled', true);
+	}
+	else
+	{
+		$("#trigger-disable-param-"+e.value).removeClass("disable-trigger");
+		$("#trigger-disable-param-"+e.value).addClass("enable-trigger");
+		$("#trigger-disable-text-"+e.value).removeClass("disable-trigger");
+		$("#trigger-disable-text-"+e.value).addClass("enable-trigger");
+		$("#trigger-disable-param-"+e.value).prop('disabled', false);
+	}
+}
+
+function startStopSetup()
+{
+	if ($("#start-stop-setup").attr("iz-setup-status") == "true")
+	{
+		$("#start-stop-setup").attr("value","Stop Setup");
+		$("#start-stop-setup").attr("iz-setup-status", "false");
+	}
+	else
+	{
+		$("#start-stop-setup").attr("value","Start Setup");
+		$("#start-stop-setup").attr("iz-setup-status", "true");
+	}
+}
+
+</script>
+</body>
+</html> 
