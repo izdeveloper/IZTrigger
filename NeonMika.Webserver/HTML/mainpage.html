@@ -2,10 +2,10 @@
 <html>
 <title>INEX Trigger Configuration</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/w3.css">
-<link rel="stylesheet" href="js/jquery-ui.min.css">
-<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui.js"></script> 
+<link rel="stylesheet" href="./w3.css">
+<link rel="stylesheet" href="./jquery-ui.min.css">
+<script type="text/javascript" src="./jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="./maskinput.js"> </script>
 <style>
 .config-tab {display:none;}
 .tab-bold {font-weight: bold;}
@@ -20,34 +20,8 @@
 	border-color: red;
     border-width: 2px;
     border-style: solid;
+	margin-top: 20px;
 }
-
-/* Vertical Tabs Style =================================== */
-  .ui-tabs-vertical { width: 70em; }
-  .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 20em; }
-  .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
-  .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
-  .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; }
-  .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 47em;}
-  
-  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
-  {
-      border: 3px solid #525050 !important; 
-  }
-  
-  .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
-  {
-      color: #ff0000 !important;
-	  font-weight: bolder !important;
-  }
-  /*
-  .ui-tabs .ui-tabs-nav li.ui-tabs-active
-  {
-	margin-left: 2px !important
-  }
- */
-/* End of vertical tabs style ================================ */
-
 .disable-trigger
 {
 	opacity: 0.5;
@@ -58,19 +32,122 @@
 	opacity: 1;
 }
 
+.distance-trigger-div 
+{
+	border-color: blue;
+    border-width: 2px;
+    border-style: solid;	
+}
+.config-trigger-div
+{
+	border-color: green;
+    border-width: 2px;
+    border-style: solid;
+}
+.text-padding
+{
+	padding-left: 20px;
+}
+
+.input-ip
+{
+	width: 80%;
+	padding-left: 5px;
+}
+
+/* Error styles */
+.iz-ip-error
+{
+	border-color: red;
+	border-width: 2px;
+    border-style: solid;	
+}
+
+/* Error model box styles */
+/* The Modal (background) */
+.error-modal, .ok-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.error-modal-content {
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 2px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+	color: #D8000C;
+	background-color: #FFBABA;
+	border-radius: 10px;
+}
+
+.ok-modal-content {
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 2px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+	color: #3b5a3c;
+	background-color: #baffd2;
+	border-radius: 10px;
+}
+
+/* The Close Button */
+.error-close, .ok-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.error-close:hover,
+.error-close:focus, .ok-close:hover, .ok-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*
+// progress bar stylesheet
+//.no-js #loader { display: none;  }
+//.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+*/
+/*
+#start-page {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url("./Preloader_3.gif") center no-repeat #fff;
+}
+*/
 </style>
+<div id="start-page" style="display: block">
+	<p> <img src="./Preloader_3.gif" alt="Smiley face" align="middle"> </p>
+</div>
+
+<div id="full-content" style="display: none">
 <body class="w3-container">
 
 <h2>INEX Lidar Trigger Configuration</h2>
 
 <div class="w3-row">
-  <a href="#" onclick="openConfigTab(event, 'network');">
+  <a href="#" onclick="openConfigTab('network');">
     <div id=div-network class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">System and Network Configuration</div>
   </a>
-  <a href="#" onclick="openConfigTab(event, 'distance');">
+  <a href="#" onclick="openConfigTab('distance');">
     <div id=div-distance class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Trigger and Distance Configuration</div>
   </a>
-  <a href="#" onclick="openConfigTab(event, 'upload');">
+  <a href="#" onclick="openConfigTab('upload');">
     <div id=div-upload class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Firmware Upload</div>
   </a>
 </div>
@@ -78,118 +155,343 @@
 <div id="network" class="w3-container config-tab">
   <h2>System and Network Configuration </h2>
 	<div class="w3-row">
-		<div class="w3-col  s1 m1 l1  w3-center">
-				<p>Username</p>
+		<div class="w3-col  s2 m2 l2  w3-left">
+				<p class="text-padding">Username</p>
 		</div>
-		<div class="w3-col  s1 m1 l1  w3-center ">
+		<div class="w3-col  s1 m1 l1  w3-left ">
 			<p>
-				<input type="text" name="username" class="input-username">
+				<input id="input-username" type="text" name="username" class="input-username">
 			</p>
 		</div>
-		<div class="w3-col  s1 m1 l1  w3-center">
-			<p>Password</p>
+		<div class="w3-col  s2 m2 l2  w3-left">
+			<p class="text-padding">Password</p>
 		</div>
-		<div class="w3-col  s1 m1 l1  w3-center">
+		<div class="w3-col  s1 m1 l1  w3-left">
 			<p>
-				<input type="password" name="password" class="input-password">
+				<input id="input-password" type="password" name="password" class="input-password">
 			</p>
 		</div>
-		<div class="w3-col  s8 m8 l8  w3-center">
+		<div class="w3-col  s6 m6 l6  w3-center">
 			<p></p>
 		</div>		
 	</div>
+	<div class="w3-row">
+		<div class="w3-col  s2 m2 l2  w3-left">
+				<p class="text-padding">Web Server Port</p>
+		</div>
+		<div class="w3-col  s2 m2 l2  w3-left">
+				<p>
+					<input id="input-web-port" type="text" name="web-port" class="input-web-port" size="5">
+				</p>
+		</div>
+		<div class="w3-col  s8 m8 l8  w3-left">
+			<p></p>
+		</div>				
+	</div>
 	<div id="div-dhcp-enable">
 		<div class="w3-row">
-			<div class="w3-col  s1 m1 l1  w3-center">
-					<p>DHCP</p>
+			<div class="w3-col  s2 m2 l2  w3-left">
+					<p class="text-padding">DHCP</p>
 			</div>
-			<div class="w3-col  s1 m1 l1  w3-center">
+			<div class="w3-col  s1 m1 l1  w3-left">
 					<p>
-						<input id="dhcp-value" type="checkbox" name="dhcp" onchange="dhcpChange()" >
+						<input id="input-dhcp" type="checkbox" name="dhcp" onchange="dhcpChange()" >
 					</p>
 			</div>
-			<div class="w3-col  s10 m10 l10  w3-center">
+			<div class="w3-col  s9 m9 l9  w3-center">
 				<p></p>
 			</div>			
 		</div>
 	</div>
 	<div id=dhcp-disabled class=dhcp-disabled>
 		<div class="w3-row">
-			<div class="w3-col  s1 m1 l1  w3-center">
-					<p>Static IP</p>
+			<div class="w3-col  s2 m2 l2  w3-left">
+					<p class="text-padding">Static IP</p>
 			</div>
-			<div class="w3-col  s1 m1 l1  w3-center">
+			<div class="w3-col  s2 m2 l2  w3-left">
 					<p>
-						<input id=input-static-ip type="text" name="static-ip" class="input-static-ip">
+						<input id=input-static-ip type="text" name="static-ip" class="input-static-ip input-ip" size="15">
 					</p>
 			</div>
-			<div class="w3-col  s10 m10 l10  w3-center">
+			<div class="w3-col  s8 m8 l8  w3-left">
 				<p></p>
 			</div>			
 		</div>
 		<div class="w3-row">
-			<div class="w3-col  s1 m1 l1  w3-center">
-					<p>Network Mask</p>
+			<div class="w3-col  s2 m2 l2  w3-left">
+					<p class="text-padding">Network Mask</p>
 			</div>
-			<div class="w3-col  s1 m1 l1  w3-center">
+			<div class="w3-col  s2 m2 l2  w3-left">
 					<p>
-						<input id=input-network-mask type="text" name="network-mask" class="input-network-mask">
+						<input id=input-network-mask type="text" name="network-mask" class="input-network-mask input-ip" size="15">
 					</p>
 			</div>
-			<div class="w3-col  s10 m10 l10  w3-center">
+			<div class="w3-col  s8 m8 l8  w3-center">
 				<p></p>
 			</div>			
 		</div>	
 		<div class="w3-row">
-			<div class="w3-col  s1 m1 l1  w3-center">
-					<p>Gateway</p>
+			<div class="w3-col  s2 m2 l2  w3-left">
+					<p class="text-padding">Gateway</p>
 			</div>
-			<div class="w3-col  s1 m1 l1  w3-center">
+			<div class="w3-col  s2 m2 l2  w3-left">
 					<p>
-						<input id=input-gateway type="text" name="Gateway" class="input-gateway">
+						<input id=input-gateway type="text" name="Gateway" class="input-gateway input-ip" size=15>
 					</p>
 			</div>
-			<div class="w3-col  s10 m10 l10  w3-center">
+			<div class="w3-col  s8 m8 l8  w3-center">
 				<p></p>
 			</div>			
 		</div>
 	</div>
 	<div class="w3-row">
-		<div class="w3-col  s1 m1 l1  w3-center">
-				<p>NTP Server IP</p>
+		<div class="w3-col  s2 m2 l2  w3-left">
+				<p class="text-padding">NTP Server IP</p>
 		</div>
-		<div class="w3-col  s1 m1 l1  w3-center">
+		<div class="w3-col  s2 m2 l2  w3-left">
 				<p>
-					<input id=input-ntp type="text" name="ntp" class="input-ntp">
+					<input id=input-ntp type="text" name="ntp" class="input-ntp input-ip" size="15">
 				</p>
 		</div>
-		<div class="w3-col  s10 m10 l10  w3-center">
+		<div class="w3-col  s8 m8 l8  w3-center">
 			<p></p>
 		</div>			
 	</div>
 	<div class="w3-row">
-		<div class="w3-col  s1 m1 l1  w3-center">
+		<div class="w3-col  s2 m2 l2  w3-left">
 				<p>Time Zone Offset</p>
 		</div>
-		<div class="w3-col  s1 m1 l1  w3-center">
-				<p>
-					<input id=input-timeoffset type="text" name="timeoffset" class="input-timeoffset">
-				</p>
+		<div class="w3-col  s1 m1 l1  w3-left">
+			<select id="input-timezone">
+				<option timeZoneId="1" gmtAdjustment="GMT-12:00" useDaylightTime="0" value="-12">(GMT-12:00) International Date Line West</option>
+				<option timeZoneId="2" gmtAdjustment="GMT-11:00" useDaylightTime="0" value="-11">(GMT-11:00) Midway Island, Samoa</option>
+				<option timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</option>
+				<option timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</option>
+				<option timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
+				<option timeZoneId="6" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Tijuana, Baja California</option>
+				<option timeZoneId="7" gmtAdjustment="GMT-07:00" useDaylightTime="0" value="-7">(GMT-07:00) Arizona</option>
+				<option timeZoneId="8" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+				<option timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
+				<option timeZoneId="10" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Central America</option>
+				<option timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US & Canada)</option>
+				<option timeZoneId="12" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+				<option timeZoneId="13" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Saskatchewan</option>
+				<option timeZoneId="14" gmtAdjustment="GMT-05:00" useDaylightTime="0" value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+				<option timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
+				<option timeZoneId="16" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Indiana (East)</option>
+				<option timeZoneId="17" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
+				<option timeZoneId="18" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Caracas, La Paz</option>
+				<option timeZoneId="19" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Manaus</option>
+				<option timeZoneId="20" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Santiago</option>
+				<option timeZoneId="21" gmtAdjustment="GMT-03:30" useDaylightTime="1" value="-3.5">(GMT-03:30) Newfoundland</option>
+				<option timeZoneId="22" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Brasilia</option>
+				<option timeZoneId="23" gmtAdjustment="GMT-03:00" useDaylightTime="0" value="-3">(GMT-03:00) Buenos Aires, Georgetown</option>
+				<option timeZoneId="24" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Greenland</option>
+				<option timeZoneId="25" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Montevideo</option>
+				<option timeZoneId="26" gmtAdjustment="GMT-02:00" useDaylightTime="1" value="-2">(GMT-02:00) Mid-Atlantic</option>
+				<option timeZoneId="27" gmtAdjustment="GMT-01:00" useDaylightTime="0" value="-1">(GMT-01:00) Cape Verde Is.</option>
+				<option timeZoneId="28" gmtAdjustment="GMT-01:00" useDaylightTime="1" value="-1">(GMT-01:00) Azores</option>
+				<option timeZoneId="29" gmtAdjustment="GMT+00:00" useDaylightTime="0" value="0">(GMT+00:00) Casablanca, Monrovia, Reykjavik</option>
+				<option timeZoneId="30" gmtAdjustment="GMT+00:00" useDaylightTime="1" value="0">(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</option>
+				<option timeZoneId="31" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
+				<option timeZoneId="32" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
+				<option timeZoneId="33" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+				<option timeZoneId="34" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+				<option timeZoneId="35" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) West Central Africa</option>
+				<option timeZoneId="36" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Amman</option>
+				<option timeZoneId="37" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Athens, Bucharest, Istanbul</option>
+				<option timeZoneId="38" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Beirut</option>
+				<option timeZoneId="39" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Cairo</option>
+				<option timeZoneId="40" gmtAdjustment="GMT+02:00" useDaylightTime="0" value="2">(GMT+02:00) Harare, Pretoria</option>
+				<option timeZoneId="41" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+				<option timeZoneId="42" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Jerusalem</option>
+				<option timeZoneId="43" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Minsk</option>
+				<option timeZoneId="44" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Windhoek</option>
+				<option timeZoneId="45" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Kuwait, Riyadh, Baghdad</option>
+				<option timeZoneId="46" gmtAdjustment="GMT+03:00" useDaylightTime="1" value="3">(GMT+03:00) Moscow, St. Petersburg, Volgograd</option>
+				<option timeZoneId="47" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Nairobi</option>
+				<option timeZoneId="48" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Tbilisi</option>
+				<option timeZoneId="49" gmtAdjustment="GMT+03:30" useDaylightTime="1" value="3.5">(GMT+03:30) Tehran</option>
+				<option timeZoneId="50" gmtAdjustment="GMT+04:00" useDaylightTime="0" value="4">(GMT+04:00) Abu Dhabi, Muscat</option>
+				<option timeZoneId="51" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Baku</option>
+				<option timeZoneId="52" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Yerevan</option>
+				<option timeZoneId="53" gmtAdjustment="GMT+04:30" useDaylightTime="0" value="4.5">(GMT+04:30) Kabul</option>
+				<option timeZoneId="54" gmtAdjustment="GMT+05:00" useDaylightTime="1" value="5">(GMT+05:00) Yekaterinburg</option>
+				<option timeZoneId="55" gmtAdjustment="GMT+05:00" useDaylightTime="0" value="5">(GMT+05:00) Islamabad, Karachi, Tashkent</option>
+				<option timeZoneId="56" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Sri Jayawardenapura</option>
+				<option timeZoneId="57" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+				<option timeZoneId="58" gmtAdjustment="GMT+05:45" useDaylightTime="0" value="5.75">(GMT+05:45) Kathmandu</option>
+				<option timeZoneId="59" gmtAdjustment="GMT+06:00" useDaylightTime="1" value="6">(GMT+06:00) Almaty, Novosibirsk</option>
+				<option timeZoneId="60" gmtAdjustment="GMT+06:00" useDaylightTime="0" value="6">(GMT+06:00) Astana, Dhaka</option>
+				<option timeZoneId="61" gmtAdjustment="GMT+06:30" useDaylightTime="0" value="6.5">(GMT+06:30) Yangon (Rangoon)</option>
+				<option timeZoneId="62" gmtAdjustment="GMT+07:00" useDaylightTime="0" value="7">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
+				<option timeZoneId="63" gmtAdjustment="GMT+07:00" useDaylightTime="1" value="7">(GMT+07:00) Krasnoyarsk</option>
+				<option timeZoneId="64" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+				<option timeZoneId="65" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Kuala Lumpur, Singapore</option>
+				<option timeZoneId="66" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Irkutsk, Ulaan Bataar</option>
+				<option timeZoneId="67" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Perth</option>
+				<option timeZoneId="68" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Taipei</option>
+				<option timeZoneId="69" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Osaka, Sapporo, Tokyo</option>
+				<option timeZoneId="70" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Seoul</option>
+				<option timeZoneId="71" gmtAdjustment="GMT+09:00" useDaylightTime="1" value="9">(GMT+09:00) Yakutsk</option>
+				<option timeZoneId="72" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Adelaide</option>
+				<option timeZoneId="73" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Darwin</option>
+				<option timeZoneId="74" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Brisbane</option>
+				<option timeZoneId="75" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Canberra, Melbourne, Sydney</option>
+				<option timeZoneId="76" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Hobart</option>
+				<option timeZoneId="77" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Guam, Port Moresby</option>
+				<option timeZoneId="78" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Vladivostok</option>
+				<option timeZoneId="79" gmtAdjustment="GMT+11:00" useDaylightTime="1" value="11">(GMT+11:00) Magadan, Solomon Is., New Caledonia</option>
+				<option timeZoneId="80" gmtAdjustment="GMT+12:00" useDaylightTime="1" value="12">(GMT+12:00) Auckland, Wellington</option>
+				<option timeZoneId="81" gmtAdjustment="GMT+12:00" useDaylightTime="0" value="12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</option>
+				<option timeZoneId="82" gmtAdjustment="GMT+13:00" useDaylightTime="0" value="13">(GMT+13:00) Nuku'alofa</option>
+			</select>	
 		</div>
-		<div class="w3-col  s10 m10 l10  w3-center">
+		<div class="w3-col  s9 m9 l9  w3-center">
 			<p></p>
 		</div>			
 	</div>
 	
 	<div class="submit-form">
 		<div class="w3-row">
-			<div class="w3-col  s1 m1 l1  w3-center">
-					<p>Submit Configuration</p>
+			<div class="w3-col  s2 m2 l2  w3-left">
+					<p class="text-padding">Submit Configuration</p>
 			</div>
-			<div class="w3-col  s1 m1 l1  w3-center">
+			<div class="w3-col  s1 m1 l1  w3-left">
 					<p>
 						<input id="submit-network" type="submit" value="Submit">
 					</p>
+			</div>
+			<div class="w3-col  s9 m9 l9  w3-center">
+				<p></p>
+			</div>			
+		</div>	
+	</div>	
+</div>
+
+<div id="distance" class="w3-container config-tab">
+
+	<h2>Trigger Distance Setup</h2>
+  	<div class="distance-trigger-div">	
+		<div class="w3-row">
+			<div class="w3-col  s2 m2 l2  w3-left ">
+					<p class="text-padding">Press Start or Stop For Setup</p>
+			</div>
+			<div class="w3-col  s2 m2 l2  w3-left">
+					<p>
+						<input id="start-stop-setup" iz-setup-status="true" type="button" value="Start Setup">
+					</p>
+			</div>	
+			<div id="setup-image" class="w3-col  s2 m2 l2  w3-left">
+				<p> <img src="loader4.gif" alt="Smiley face" align="middle"> </p>
+			</div>
+		</div>
+	
+		<div class="w3-row">
+			<div class="w3-col  s2 m2 l2  w3-left">
+				<p class="text-padding">Distance without a vehicle</p>
+			</div>
+			<div  class="w3-col  s2 m2 l2  w3-left">
+				<p>
+					<input id="input-no-vehicle" type="text" name="no-vehicle" readonly size="10">
+				</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-left">
+				<p>
+					<input id="submit-no-vehicle" type="submit" value="Set Distance">
+				</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center"><p>-></p></div>
+			<div  class="w3-col  s2 m2 l2  w3-left">
+				<p>
+					<input id="input-set-no-vehicle" type="text" name="no-vehicle" readonly size="10">
+				</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center"><p></p></div>
+		</div>
+	</div>		
+
+    <h2>Trigger Configuration</h2>
+	<div class="config-trigger-div">
+		<div class="w3-row">
+
+			<div  class="w3-col  s2 m2 l2  w3-left enable-trigger">
+					<p id="trigger-disable-text-ip" class="text-padding">
+						ALPR Camera IP address
+					</p>
+			</div>
+			<div class="w3-col  s2 m2 l2  w3-left enable-trigger">
+					<p>
+						<input id="input-camera-ip" type="text" name="input-camera-ip" class="camera-ip">
+					</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-left">
+					<p>
+						Disable TCP/IP Trigger
+					</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id="input-camera-trigger" type="checkbox" name="input-camera-trigger">
+					</p>
+			</div>		
+		</div>
+		<div class="w3-row">
+
+			<div  class="w3-col  s2 m2 l2  w3-left enable-trigger">
+					<p id="trigger-disable-text-ttl" class="text-padding">
+						TTL Trigger Length in ms
+					</p>
+			</div>
+			<div class="w3-col  s2 m2 l2  w3-left enable-trigger">
+					<p>
+						<input id="input-ttl-length" type="text" name="input-ttl-length" class="input-ttl-length" size="5">
+					</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-left">
+					<p >
+						Disable TTL Trigger
+					</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id="input-ttl-trigger" type="checkbox" name="input-ttl-trigger">
+					</p>
+			</div>		
+		</div>
+		<div class="w3-row">
+
+			<div  class="w3-col  s2 m2 l2  w3-left enable-trigger">
+					<p id="trigger-disable-text-stop" class="text-padding">
+						Time to Consider Stopped Vehicle ms
+					</p>
+			</div>
+			<div class="w3-col  s2 m2 l2  w3-left enable-trigger">
+					<p>
+						<input id="input-stop-time" type="text" name="input-stop-time" class="input-stop-time" size="2000">
+					</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-left">
+					<p >
+						Disable Stop Trigger
+					</p>
+			</div>
+			<div  class="w3-col  s1 m1 l1  w3-center">
+					<p>
+						<input id="input-stop-trigger" type="checkbox" name="input-stop-trigger">
+					</p>
+			</div>		
+		</div>
+	</div>
+	<div class="submit-form">
+		<div class="w3-row">
+			<div class="w3-col  s2 m2 l2  w3-left ">
+				<p class="text-padding">Submit Configuration</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-left">
+				<p>
+					<input id="submit-trigger" type="submit" value="Submit">
+				</p>
 			</div>
 			<div class="w3-col  s10 m10 l10  w3-center">
 				<p></p>
@@ -198,184 +500,217 @@
 	</div>	
 </div>
 
-<div id="distance" class="w3-container config-tab">
-	 <div id="tabs">
-  <ul>
-    <li><a href="#trigger-setup">Trigger Distance Setup</a></li>
-    <li><a href="#trigger-configuration">Trigger Configuration</a></li>
-  </ul>
-  <div id="trigger-setup">
-    <h2>Trigger Distance Setup</h2>
-    <p>
-		<div class="w3-row">
-			<div class="w3-col  s6 m6 l6  w3-center">
-					<p>Press Start or Stop For Setup</p>
-			</div>
-			<div class="w3-col  s6 m6 l6  w3-center">
-					<p>
-						<input id=start-stop-setup iz-setup-status="true" type="button" value="Start Setup">
-					</p>
-			</div>	
-		</div>
-		<div class="w3-row">
-			<div class="w3-col  s3 m3 l3  w3-center">
-				<p>Distance without vehicle</p>
-			</div>
-			<div  class="w3-col  s3 m3 l3  w3-center">
-				<p>
-					<input id="no-vehicle" type="text" name="no-vehicle" readonly size="10">
-				</p>
-			</div>
-			<div  class="w3-col  s2 m2 l2  w3-center">
-				<p>
-					<input id="submit-no-vehicle" type="submit" value="Set Distance">
-				</p>
-			</div>
-			<div class="w3-col  s1 m1 l1  w3-center"><p>-></p></div>
-			<div  class="w3-col  s2 m2 l2  w3-center">
-				<p>
-					<input id="no-vehicle-set" type="text" name="no-vehicle" readonly size="10">
-				</p>
-			</div>
-			<div class="w3-col  s1 m1 l1  w3-center"><p></p></div>
-		</div>
-	</p>
-  </div>
-  <div id="trigger-configuration">
-    <h2>Trigger Configuration</h2>
-    <div class="w3-row">
-
-		<div  class="w3-col  s4 m4 l4  w3-center enable-trigger">
-				<p id="trigger-disable-text-ip">
-					ALPR Camera IP address
-				</p>
-		</div>
-		<div class="w3-col  s4 m4 l4  w3-center enable-trigger">
-				<p>
-					<input id="trigger-disable-param-ip" type="text" name="camera-ip" class="camera-ip">
-				</p>
-		</div>
-		<div  class="w3-col  s3 m3 l3  w3-center">
-				<p>
-					Disable TCP/IP Trigger
-				</p>
-		</div>
-		<div  class="w3-col  s1 m1 l1  w3-center">
-				<p>
-					<input id="trigger-disable-ip" type="checkbox" name="vehicle" value="ip">
-				</p>
-		</div>		
-	</div>
-	<div class="w3-row">
-
-		<div  class="w3-col  s4 m4 l4  w3-center enable-trigger">
-				<p id="trigger-disable-text-ttl">
-					Trigger Length in ms
-				</p>
-		</div>
-		<div class="w3-col  s4 m4 l4  w3-center enable-trigger">
-				<p>
-					<input id="trigger-disable-param-ttl" type="text" name="trigger-length" class="trigger-length" size="5">
-				</p>
-		</div>
-		<div  class="w3-col  s3 m3 l3  w3-center">
-				<p >
-					Disable TTL Trigger
-				</p>
-		</div>
-		<div  class="w3-col  s1 m1 l1  w3-center">
-				<p>
-					<input id="trigger-disable-ttl" type="checkbox" name="vehicle" value="ttl">
-				</p>
-		</div>		
-	</div>
-	<div class="w3-row">
-
-		<div  class="w3-col  s4 m4 l4  w3-center enable-trigger">
-				<p id="trigger-disable-text-stop">
-					Time to Consider Stopped Vehicle in ms
-				</p>
-		</div>
-		<div class="w3-col  s4 m4 l4  w3-center enable-trigger">
-				<p>
-					<input id="trigger-disable-param-stop" type="text" name="stop-length" class="stop-length" size="5">
-				</p>
-		</div>
-		<div  class="w3-col  s3 m3 l3  w3-center">
-				<p >
-					Disable Stop Trigger
-				</p>
-		</div>
-		<div  class="w3-col  s1 m1 l1  w3-center">
-				<p>
-					<input id="trigger-disable-stop" type="checkbox" name="vehicle" value="stop">
-				</p>
-		</div>		
-	</div>
-  </div>
-
-	</div>
-</div>
-
 <div id="upload" class="w3-container config-tab">
   <h2>Firmware Upload</h2>
   <p>Tokyo is the capital of Japan.</p>
 </div>
 
+<div id="error-message-box" class="error-modal">
+  <!-- Modal content -->
+  <div class="error-modal-content">
+  
+    <span id="error-message-close" class="error-close"><img src="./error-message.png" alt="Smiley face" width="42" height="42"></span>
+    <p id="error-message-text"></p>
+  </div>
+</div>
+
+<div id="ok-message-box" class="ok-modal">
+  <!-- Modal content -->
+  <div class="ok-modal-content">
+  
+    <span id="ok-message-close" class="ok-close"><img src="./ok_icon.png" alt="Smiley face" width="42" height="42"></span>
+    <p id="ok-message-text"></p>
+  </div>
+</div>
+
 <script>
 $(document).ready(function(){ 
-	openConfigTab(event, "network");
+	// stop showing progress and enable content
+	$("#start-page").hide();
+	$("#full-content").show();
+	
+	$("#setup-image").hide();
+	
+	showNetworkSystem(false);
+	
+	openConfigTab("network");
 	dhcpChange();
 	// add vertical tabs
-	$('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-	$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	//$('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+	//$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 	
 	// Add Event Handlers 
 	$("#trigger-disable-ip").click(disableTrigger);
-	$("#submit-no-vehicle").click(submitNoVehicle);
 	$("#trigger-disable-ttl").click(disableTrigger);
 	$("#start-stop-setup").click(startStopSetup);
-	$("#submit-network").click(submitNetwork);
 	$("#trigger-disable-stop").click(disableTrigger);
+	$("#submit-no-vehicle").click(submitNoVehicleDistance);
+	
+	// Submit Network and System Configuration
+	$("#submit-network").click(submitNetwork);
+	
+	// Submit Trigger Info
+	$("#submit-trigger")click(submitTrigger);
+	
+	// apply mask to ip address fields
+	 //  $("#input-static-ip").mask("999.999.999.999");
+	/*
+	   $("#input-network-mask").mask("(999) 999-9999");
+	   $("#input-gateway").mask("99-9999999");
+	   $("#input-ntp").mask("999-99-9999");
+   */
+	
+
 }) 
 
-function ValidateIPaddress(ipaddress)   
+function ValidateIPaddress(input_field)   
 {  
- if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))  
+	$(input_field).removeClass("iz-ip-error");
+ if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test($(input_field).val()))  
   {  
     return (true)  
   }  
-  alert("You have entered an invalid IP address!")  
+  $(input_field).addClass("iz-ip-error");
+  // alert("You have entered an invalid IP address!");
+  errorMessage(getText("ip_error"));
   return (false)  
-}  
+} 
+
+function ValidatePort(input_field)
+{
+	if (isNumber($(input_field).val()) == false)
+	{
+		$(input_field).addClass("iz-ip-error");
+		errorMessage(getText("web_port_error"));
+		return false;
+	}
+	return true;
+} 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 function submitNetwork()
 {
 	var _inputCheck = true;
-	if ( ValidateIPaddress ($("#input-static-ip").val()) == false )
+	var newSettings = {};	
+	if ( ValidateIPaddress ("#input-static-ip") == false )
 		return;
-	if ( ValidateIPaddress ($("#input-network-mask").val()) == false )
+	if ( ValidateIPaddress ("#input-network-mask") == false )
 		return;
-	if ( ValidateIPaddress ($("#input-gateway").val()) == false )
+	if ( ValidateIPaddress ("#input-gateway") == false )
 		return;
-	if ( ValidateIPaddress ($("#input-ntp").val()) == false )
+	if ( ValidateIPaddress ("#input-ntp") == false )
 		return;
+		
+	if (ValidatePort("#input-web-port") == false)
+		return;
+	
+	if($.trim($("#input-username").val()).length)
+		newSettings["username"] = $.trim($("#input-username").val());
+	else
+	{
+		errorMessage(getText("username_error"));
+		return;
+	}
+	if($.trim($("#input-password").val()).length)
+		newSettings["password"] = $.trim($("#input-password").val());
+	else
+	{
+		errorMessage(getText("password_error"));
+		return;
+	}
+
+	newSettings["static_ip"] = $("#input-static-ip").val();
+	newSettings["network_mask"] = $("#input-network-mask").val();
+	newSettings["gateway"] = $("#input-gateway").val();
+	newSettings["ntp"] = $("#input-ntp").val();
+	newSettings["dhcp"] = $("#input-dhcp").is(":checked")? 1:0;
+	newSettings["timezone"] = $( "#input-timezone option:selected" ).attr("timeZoneId");
+	newSettings["timezone_val"] = $( "#input-timezone").val();
+	newSettings["web_port"] = $("#input-web-port").val();
+	
+	var request = $.ajax({
+		url: "savenetwork",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",	
+		data: newSettings,
+		success: function (event)
+		{			
+			showNetworkSystem(true);
+		},
+		error: function(xhr)
+		{				
+					errorMessage(getText("savenetwork_error"));			 
+		}
+		});
 	console.debug("networks submit");
 }
+
+function showNetworkSystem(enableAlert)
+{
+	$.ajax
+	({
+		url: "getnetwork",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",	
+		success: function (event)
+		{			
+			$("#input-username").val(event.username);
+			$("#input-password").val(event.password);
+			$("#input-web-port").val(event.web_port);
+			$("#input-static-ip").val(event.static_ip);
+			$("#input-network-mask").val(event.network_mask); 
+			$("#input-gateway").val(event.gateway);
+			$("#input-ntp").val(event.ntp);
+			event.dhcp == "1"? $("#input-dhcp").prop('checked', true): $("#input-dhcp").prop('checked', false);
+			$("#input-dhcp").trigger("change");
+			$("#input-timezone option[timeZoneId="+event.timezone+"]").prop('selected', true);
+			if (enableAlert == true)
+			{
+				okMessage(getText("ok_save_networks"));
+				rebootDevice();
+			}
+		},
+		error: function(xhr)
+		{				
+			errorMessage(getText("getnetwork_error"));			 
+		}
+	})
+}
+
+function rebootDevice()
+{
+	$.ajax
+	({
+		url: "reboot",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",	
+		success: function (event) {
+			
+		}
+	})
+}
+
 function dhcpChange() {
-	if ($("#dhcp-value").prop("checked") == true )
+	if ($("#input-dhcp").prop("checked") == true )
 	{
 		$("#dhcp-disabled").hide();
 		$("#div-dhcp-enable").addClass("dhcp-enabled");
+		
 	}
 	else
 	{
 		$("#dhcp-disabled").show();
 		$("#div-dhcp-enable").removeClass("dhcp-enabled");
+		
 	}
 }
 
-function openConfigTab(event, tabName) {
+function openConfigTab(tabName) {
   var i, x, tablinks;
   x = document.getElementsByClassName("config-tab");
   for (i = 0; i < x.length; i++) {
@@ -391,8 +726,13 @@ function openConfigTab(event, tabName) {
   document.getElementById("div-"+tabName).className += " tab-bold";
 }
 
-function submitNoVehicle()
+function submitNoVehicleDistance()
 {
+	// set the number only when calibration is running
+	if ($("#start-stop-setup").attr("iz-setup-status") == "false")
+	{
+		$("#input-set-no-vehicle").val($("#input-no-vehicle").val());
+	}
 }
 
 function disableTrigger(param)
@@ -418,18 +758,216 @@ function disableTrigger(param)
 
 function startStopSetup()
 {
+	var laserStatusStr = "";
+	var newSettings = {};
+	if ($("#start-stop-setup").attr("iz-setup-status") == "true")
+	{
+		newSettings["CMD"] = "on";
+		laserStatusStr = getText("ok_laser_on");
+	}
+	if ($("#start-stop-setup").attr("iz-setup-status") == "false")
+	{
+		newSettings["CMD"] = "off";
+		laserStatusStr = getText("ok_laser_off");
+	}
+	
+	$.ajax
+	({
+		url: "turnonoff",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		data: newSettings,
+		success: function (event) {
+			turnOnOffCallibration();
+			okMessage(laserStatusStr);
+			if (newSettings["CMD"] == "on" )
+				showLidarDistance();
+		},
+		error: function (event) {
+			errorMessage(getText("laser_error"));	
+		}
+	})
+}
+
+function turnOnOffCallibration()
+{
 	if ($("#start-stop-setup").attr("iz-setup-status") == "true")
 	{
 		$("#start-stop-setup").attr("value","Stop Setup");
 		$("#start-stop-setup").attr("iz-setup-status", "false");
+		$("#setup-image").show();
 	}
 	else
 	{
 		$("#start-stop-setup").attr("value","Start Setup");
 		$("#start-stop-setup").attr("iz-setup-status", "true");
+		$("#setup-image").hide();
+	}	
+}
+function showLidarDistance()
+{
+	$.ajax
+	({
+		url: "showdist",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function (event) {
+		
+			$("#input-no-vehicle").removeClass("iz-ip-error");
+			$("#input-no-vehicle").val(Math.round(parseFloat(event.no_vehicle)).toString());
+			if ((event.laser_status == false) && ($("#start-stop-setup").attr("iz-setup-status") == "false"))
+			{
+				turnOnOffCallibration();
+			}
+			else
+			{	
+				if (event.laser_status == true)
+					setTimeout(function(){ showLidarDistance();  }, 250);
+			}
+			
+		},
+		error: function() {
+			$("#input-no-vehicle").val(0);
+			$("#input-no-vehicle").addClass("iz-ip-error");
+		}
+	})
+		
+}
+
+function submitTrigger ()
+{
+	var newSettings = {};
+	
+	$("#input-set-no-vehicle").removeClass("iz-ip-error");
+	$("#input-camera-ip").removeClass("iz-ip-error");
+	$("#input-ttl-length").removeClass("iz-ip-error");
+	$("#input-stop-time").removeClass("iz-ip-error");
+	
+	if ($("#input-set-no-vehicle").val() == "")
+	{
+		errorMessage(getText("distance_error"));
+		$("#input-set-no-vehicle").addClass("iz-ip-error");
+		return;
 	}
+	else
+	{
+		newSettings["set_no_vehicle"] = $("#input-set-no-vehicle").val()
+	}
+	
+	if ($("#input-camera-trigger").is(":checked") == false)
+	{
+		if ( ValidateIPaddress ("#input-camera-ip") == false )
+			return;
+		newSettings["camera_ip"] = $("#input-camera-ip").val();
+		newSettings["camera-trigger"] = 0;
+	}
+	else
+	{
+		newSettings["camera_ip"] = "";
+		newSettings["camera-trigger"] = 1;
+	}
+	
+	if ($("#input-ttl-trigger").is(":checked") == false)
+	{	
+		if (isNumber($("#input-ttl-length").val()) == false)
+		{
+			errorMessage(getText("ttl_length_error"));
+			$("#input-ttl-length").addClass("iz-ip-error");
+			return;
+		}
+		newSettings["ttl_length"] = $("#input-ttl-length").val();
+		newSettings["ttl_trigger"] = 0;
+	}
+	else
+	{
+		newSettings["ttl_length"] = "0";
+		newSettings["ttl_trigger"] = 1;
+	}
+	if ($("#input-stop-trigger").is(":checked") == false)
+	{	
+		if (isNumber($("#input-stop-time").val()) == false)
+		{
+			errorMessage(getText("stop_time_error"));
+			$("#input-stop-time").addClass("iz-ip-error");
+			return;
+		}
+		newSettings["stop_time"] = $("#input-stop-time").val();
+		newSettings["stop_trigger"] = 0;
+	}
+	else
+	{
+		newSettings["stop_time"] = "0";
+		newSettings["stop_trigger"] = 1;		
+	}
+	
+	// send the config 	
+	var request = $.ajax({
+		url: "savetrigger",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",	
+		data: newSettings,
+		success: function (event)
+		{			
+			showTrigger(true);
+		},
+		error: function(xhr)
+		{				
+			errorMessage(getText("savetrigger_error"));			 
+		}
+		});
+	
+}
+
+function showTrigger()
+{
+	
+}
+
+function errorMessage(text)
+{
+	var modal = $("#error-message-box");
+	var close = $("#error-message-close");
+	modal.css("display", "block");
+	$("#error-message-text").text(text);
+	close.click(function() {modal.css("display", "none");});
+}
+
+function okMessage(text)
+{
+	var modal = $("#ok-message-box");
+	var close = $("#ok-message-close");
+	modal.css("display", "block");
+	$("#ok-message-text").text(text);
+	close.click(function() {modal.css("display", "none");});
+}
+
+function getText(textID)
+{
+	var lang = 0;
+	var text =
+	{
+		ip_error: ["You have entered invalid IP address!"],
+		username_error: ["Username is  missing. Please enter Username" ],
+		password_error: ["Password is missing. Please enter Password"],
+		savenetwork_error: ["Saving System and Network Configuration has Failed. Please try again"],
+		getnetwork_error: ["Failed to get System and Network Configuration"],
+		ok_save_networks: ["Network and System Configuration Saved. Robooting ..."],
+		web_port_error: ["Web Server Port must be a  number and configuired"],
+		ok_laser_on: ["Callibration Pointer is turned ON. Start Callibration"],
+		ok_laser_off: ["Callibration Pointer is turned OFF. Callibration is done"],
+		distance_error: ["Distance without a vehicle is not set. Run callibration and set the value"],
+		ttl_length_error: ["Trigger Length must be a number"],
+		stop_time_error: ["Stop time value must be a numbert"],
+		savetrigger_error: ["Failed to save the trigger configuration"];
+		
+	}
+	return text[textID][lang];
 }
 
 </script>
+</div>
 </body>
 </html> 
