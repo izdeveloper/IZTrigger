@@ -38,6 +38,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Laser">
+      <HintPath>..\..\Laser\bin\Debug\Laser.dll</HintPath>
+    </Reference>
     <Reference Include="LidarReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\LidarReader\bin\Debug\LidarReader.dll</HintPath>
@@ -51,9 +54,21 @@
     <Reference Include="NeonMika.Webserver">
       <HintPath>..\..\NeonMika.Webserver\bin\Debug\NeonMika.Webserver.dll</HintPath>
     </Reference>
+    <Reference Include="NetworkConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetworkConfig\bin\Debug\NetworkConfig.dll</HintPath>
+    </Reference>
     <Reference Include="SecretLabs.NETMF.IO, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="StatusLED, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\StatusLED\bin\Debug\StatusLED.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO" />
+    <Reference Include="TriggerConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TriggerConfig\bin\Debug\TriggerConfig.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

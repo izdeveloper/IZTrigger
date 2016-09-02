@@ -15,7 +15,7 @@ namespace NeonMika.Webserver.Responses.ComplexResponses
         { }
 
         /// <summary>
-        /// Execute this to check if SendResponse shoul be executed
+        /// Execute this to check if SendResponse should be executed
         /// </summary>
         /// <param name="e">The request that should be handled</param>
         /// <returns>True if URL refers to this method, otherwise false (false = SendRequest should not be exicuted) </returns>

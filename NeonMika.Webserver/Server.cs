@@ -12,9 +12,14 @@ using NeonMika.Webserver.Responses;
 using NeonMika.Util;
 using NeonMika.Webserver.Responses.ComplexResponses;
 using NeonMika.Webserver.POST;
+using SecretLabs.NETMF.Hardware.NetduinoPlus;
 using System.IO;
 using LidarReader;
 using DistanceValue;
+using StatusLED;
+using Laser;
+using NetworkConfig;
+using TriggerConfig;
 
 namespace NeonMika.Webserver
 {
@@ -49,6 +54,11 @@ namespace NeonMika.Webserver
 
         private DistanceValue.DistanceValueClass _distanceValue;
 
+        private StatusLED.StatusLED _statusLED;
+        private Laser.Laser _laser;
+
+        private LidarReader.LidarReader _lidar_reader;
+
         // private OutputPort led;
 
 
@@ -58,7 +68,22 @@ namespace NeonMika.Webserver
         /// <param name="portNumber">The port to listen for incoming requests</param>
         public Server()
         {
+            // Turn on red Light to show we are initializing
+            _statusLED = new StatusLED.StatusLED(Pins.GPIO_PIN_D8, Pins.GPIO_PIN_D9, Pins.GPIO_PIN_D10);
+            _statusLED.redLED();
+            _laser = new Laser.Laser(Pins.GPIO_PIN_D4);
+            _distanceValue = new DistanceValue.DistanceValueClass();
 
+        }
+
+        public void setLaser(Laser.Laser obj)
+        {
+            _laser = obj;
+        }
+
+        public Laser.Laser getLaser()
+        {
+            return _laser;
         }
 
         public void setDistanceValue(DistanceValue.DistanceValueClass dv)
@@ -75,9 +100,28 @@ namespace NeonMika.Webserver
         {
             Debug.Print("THANKS FOR USING INEX LIDAR TRIGGER");
 
-            this.Port = port;
+            // Configure Network Settings
+            NetworkConfig.NetworkConfig nc = new NetworkConfig.NetworkConfig(@"\SD\config.txt");
+            nc.configNetworkSystem();
+            this.Port = Int32.Parse(nc.getWebPort()); 
 
-            NetworkSetup(DhcpEnable, ipAddress, subnetMask, gatewayAddress, networkName);
+            // Start Lidar
+            TriggerConfig.TriggerConfig tc = new TriggerConfig.TriggerConfig(@"\SD\trigger.txt");
+            tc.configTrigger();
+            _lidar_reader = new LidarReader.LidarReader(tc.SetNoVehicle, 10, 15);
+            _lidar_reader.setDistanceValueLocation(_distanceValue);
+            _lidar_reader.setTTLTriger(tc.TTLLength, tc.TTLTrigger);
+            _lidar_reader.setIPTrigger(tc.CameraIP, tc.CameraPort, tc.CameraTrigger);
+            _lidar_reader.setStopTrigger(tc.StopTime, tc.StopTrigger);
+            _inport = _lidar_reader.getInterruptPort();
+
+
+            // print the settings
+            var interf = NetworkInterface.GetAllNetworkInterfaces()[0];
+            Debug.Print("\n\n---------------------------");
+            Debug.Print("Network is set up!\nIP: " + interf.IPAddress + " (DHCP: " + interf.IsDhcpEnabled + ")");
+            Debug.Print("---------------------------");
+
             // StartLedThread(ledPort);
             ResponseListInitialize();
             SocketSetup();
@@ -88,6 +132,8 @@ namespace NeonMika.Webserver
             Debug.Print("\n\n---------------------------");
             Debug.Print("Webserver is now up and running");
 
+            // start Lidar
+            _lidar_reader.Start();
         }
 
         /// <summary>
@@ -171,15 +217,12 @@ namespace NeonMika.Webserver
             {
                 try
                 {
-                   /* Socket clientSocket =null;
-                    while (!listeningSocket.Poll(1000, SelectMode.SelectRead))
-                 //   {
-                        clientSocket = listeningSocket.Accept();
-                        break;
-                    }
-                    **/
+                    // show ready status 
+                    _statusLED.greenLED();
+
                      using (Socket clientSocket = listeningSocket.Accept())
                     {
+                        _statusLED.blueLED();
                         _inport.DisableInterrupt();
                         //Wait to get the bytes in the sockets "available buffer"
                         int availableBytes = AwaitAvailableBytes(clientSocket);
@@ -196,6 +239,12 @@ namespace NeonMika.Webserver
                             //reqeust created, checking the response possibilities
                             using (Request tempRequest = new Request(Encoding.UTF8.GetChars(header), clientSocket))
                             {
+                                // add Laser obj to pass it down to response function
+                                tempRequest.setLaser(this._laser);
+
+                                // add lidar distance object
+                                tempRequest.setLidarDistance(this._distanceValue);
+
                                 Debug.Print("\n\nClient connected\nURL: " + tempRequest.URL + "\nFinal byte count: " + availableBytes + "\n");
 
                                 if (tempRequest.Method == "POST")
@@ -221,6 +270,8 @@ namespace NeonMika.Webserver
                             }
 
                             Debug.Print("Request finished");
+                            Debug.Print("End Request, freemem: " + Debug.GC(true));
+                            _statusLED.greenLED();
                             _inport.EnableInterrupt();
                         }
                     }
@@ -245,7 +296,7 @@ namespace NeonMika.Webserver
 
             // DEBUG
             String strLine = new String(System.Text.Encoding.UTF8.GetChars(buffer, 0, buffer.Length));
-            Debug.Print("+->" + strLine);
+           //  Debug.Print("+->" + strLine);
 
             for (int headerend = 0; headerend < buffer.Length - 3; headerend++)
             {
@@ -366,10 +417,20 @@ namespace NeonMika.Webserver
             AddResponse(new FileUpload("upload"));
             AddResponse(new FileResponse());
             AddResponse(new DeleteAll("deleteall"));
+            AddResponse(new DeleteFile("deletefile"));
+            AddResponse(new FilesList("fileslist"));
+            AddResponse(new SaveSystemNetworkSettings("savenetwork"));
+            AddResponse(new ShowSystemNetworkSettings("getnetwork"));
+            AddResponse(new Reboot("reboot"));
+            AddResponse(new TurnLaser("turnonoff"));
+            AddResponse(new ShowDistance("showdist"));
+            AddResponse(new SaveTriggerSettings("savetrigger"));
+            AddResponse(new ShowTriggerSettings("showtrigger"));
             // Create Response and pass DistanceValue object 
             AddResponse(new ReadLidar("readlidar"));
-            ReadLidar r = (ReadLidar) responses["readlidar"];
+            ReadLidar r = (ReadLidar)responses["readlidar"];
             r.setDistanceValue(_distanceValue);
+            
         }
 
         //-------------------------------------------------------------

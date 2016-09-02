@@ -23,11 +23,19 @@ namespace LidarReader
         private double _lasttriggertime = 0;
         private double _lastTriggerDistance = 0;
         private double _triggerSensetivity = 0;
-        private double _stoppedTimeInterval = 0;
         private OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
         private bool _stoppedVehicleHappened;
+        private double _noVehicleDistanceRange = 0;
 
         private DistanceValue.DistanceValueClass _distanceValueLocation;
+
+        private string _cameraIP = "";
+        private Int32 _cameraPort;
+        private bool _cameraTrigger = false;
+        private double _ttlLength = 50;
+        private bool _ttlTrigger = true;
+        private double _stopTime = 20000000;
+        private bool _stopTrigger = false;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         OutputPort _oport;
@@ -35,36 +43,69 @@ namespace LidarReader
         public InterruptPort _inport;
 
         // TriggerSender thread objects
-        private TriggerSender _ts;
+        private TriggerSender _ts; 
 
-        public LidarReader(double minValue, double sensitivy, double trigger_sensetivity, double stopped_time_interval)
+        public LidarReader(double setNoVehicle, double sensitivy, double trigger_sensetivity)
         {
             Debug.Print("== LidarReader constructor");
             _sensitivy = sensitivy;
-            _minValue = minValue;
+            _minValue = setNoVehicle * 0.7;
+            _noVehicleDistanceRange = _minValue * 3.2; // distance with no vehicle , if we get more than that , we just ignore the value.
             _mLidarStartTime = 0;
             LidarInitialized = true;
             _lastTriggerDistance = 0;
             _triggerSensetivity = trigger_sensetivity;
-            _stoppedTimeInterval = stopped_time_interval;
             _stoppedVehicleHappened = false;
             _distanceValueLocation = null;
 
             // assign port , but disable interrupts , will be enabled in the start function
             _oport = new OutputPort(Pins.GPIO_PIN_D2, true);
-            _inport = new InterruptPort(Pins.GPIO_PIN_D3, true, Port.ResistorMode.Disabled, Port.InterruptMode.InterruptEdgeBoth);
+            _inport = new InterruptPort(Pins.GPIO_PIN_D1, true, Port.ResistorMode.Disabled, Port.InterruptMode.InterruptEdgeBoth);
             _inport.DisableInterrupt();
-            // start trigger sender thread
-            _ts = new TriggerSender();
-            Thread oThread = new Thread(new ThreadStart(_ts.SendTrigger));
-            oThread.Start();
+
+        }
+
+
+        public void setTTLTriger(double ttlLength, bool ttlTrigger)
+        {
+            _ttlLength = ttlLength;
+            _ttlTrigger = ttlTrigger;
+        }
+
+        public void setIPTrigger(string cameraIP, Int32 cameraPort, bool cameraTrigger)
+        {
+            _cameraIP = cameraIP;
+            _cameraTrigger = cameraTrigger;
+            _cameraPort = cameraPort;
+        }
+
+        public void setStopTrigger(double stopTime, bool stopTrigger)
+        {
+            /*
+             * Stopped time configuration is in milliseconds,
+             * the time resolution is in microseconds,
+             * so we have to multiply millisecond by 1000
+             * 
+             */
+            _stopTime = stopTime * 10000;
+            _stopTrigger = stopTrigger;
+
         }
 
         public void Start ()
         {
+            // start trigger sender thread
+            _ts = new TriggerSender(_cameraIP, _cameraPort,_cameraTrigger, _ttlLength, _ttlTrigger, _stopTrigger);
+            Thread oThread = new Thread(new ThreadStart(_ts.SendTrigger));
+            oThread.Start();
+
+            // ======================  DISABLE for DEBUG =======================
+           
             _inport.OnInterrupt += inport_OnInterrupt;
             _oport.Write(false);
             _inport.EnableInterrupt();
+            
+            // ======================  DISABLE for DEBUG =======================
 
         }
 
@@ -85,7 +126,8 @@ namespace LidarReader
         public  void  inport_OnInterrupt(uint data1, uint data2, DateTime time)
         {
             //_inport.Dispose();
-            
+            long trigger_time = 0;
+
             try
             {
                 _inport.DisableInterrupt();
@@ -108,11 +150,10 @@ namespace LidarReader
                 if (data2 == 0)
                 {
                     LastDistance = (time.Ticks - _mLidarStartTime) / 100.0;
+                    trigger_time = time.Ticks;
+                  //  if (LastDistance < _noVehicleDistanceRange )
                     _distanceValueLocation.DistanceValue = LastDistance;
 
-
-                   // if (_distanceValueLocation != null)
-                   //     _distanceValueLocation.currentDistance = LastDistance;
 
                     // Debug.Print("Distance: " + LastDistance);
 
@@ -129,7 +170,7 @@ namespace LidarReader
                             // Debug.Print("OLD Trigger: " + LastDistance);
 
                             // if time when trigger happend first is greater than N then consider this as a stop event 
-                            if (time.Ticks - _lasttriggertime > _stoppedTimeInterval)
+                            if (time.Ticks - _lasttriggertime > _stopTime)
                             {
                                 if (!_stoppedVehicleHappened)
                                 {
@@ -148,14 +189,14 @@ namespace LidarReader
                         {
                             _lasttriggertime = time.Ticks;
                             _stoppedVehicleHappened = false;
-                            Debug.Print("New Trigger: " + LastDistance);
+                            Debug.Print("New Trigger: " + LastDistance + " " + trigger_time);
 
                             led.Write(true);
-                            Thread.Sleep(50);
+                            Thread.Sleep(30);
                             led.Write(false);
 
                             // Sent notification to the trigger thread
-                            _ts.triggersQ.Enqueue("T");
+                            _ts.triggersQ.Enqueue("T"+trigger_time);
                             _ts.autoEvent.Set();
                         }
 

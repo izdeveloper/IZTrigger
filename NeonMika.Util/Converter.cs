@@ -16,11 +16,11 @@ namespace NeonMika.Util
                 using (ExtensionMethods em = new ExtensionMethods())
                 {
                     line = em.EasySplit(lines[i], seperator);
-                    Debug.Print("line[0]->" + line[0]);
+                   // Debug.Print("line[0]->" + line[0]);
                     if (line.Length > 1)
                     {
                         toReturn.Add(line[0], line[1]);
-                        Debug.Print("line[1]->" + line[1]);
+                       // Debug.Print("line[1]->" + line[1]);
                     }
                 }
 

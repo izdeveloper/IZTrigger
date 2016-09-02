@@ -37,11 +37,20 @@
     <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="Responses\ComplexResponses\Abc.cs" />
+    <Compile Include="Responses\ComplexResponses\DeleteFile.cs" />
+    <Compile Include="Responses\ComplexResponses\FileList.cs" />
     <Compile Include="Responses\ComplexResponses\JsonTest.cs" />
     <Compile Include="Responses\ComplexResponses\DeleteAll.cs" />
     <Compile Include="Responses\ComplexResponses\FileUpload.cs" />
     <Compile Include="Responses\ComplexResponses\IndexResponse.cs" />
     <Compile Include="Responses\ComplexResponses\ReadLidar.cs" />
+    <Compile Include="Responses\ComplexResponses\Reboot.cs" />
+    <Compile Include="Responses\ComplexResponses\SaveSystemNetworkSettings.cs" />
+    <Compile Include="Responses\ComplexResponses\SaveTriggerSettings.cs" />
+    <Compile Include="Responses\ComplexResponses\ShowDistance.cs" />
+    <Compile Include="Responses\ComplexResponses\ShowSystemNetworkSettings.cs" />
+    <Compile Include="Responses\ComplexResponses\ShowTriggerSettings.cs" />
+    <Compile Include="Responses\ComplexResponses\TurnLaser.cs" />
     <Compile Include="Responses\FileResponse.cs" />
     <Compile Include="Responses\JSONResponse.cs" />
     <Compile Include="Responses\Response.cs" />
@@ -53,14 +62,28 @@
     <Reference Include="FastloadMedia.NETMF.Http">
       <HintPath>..\FastloadMedia.NETMF.Http\bin\Debug\FastloadMedia.NETMF.Http.dll</HintPath>
     </Reference>
+    <Reference Include="Laser">
+      <HintPath>..\Laser\bin\Debug\Laser.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SPOT.Hardware" />
     <Reference Include="Microsoft.SPOT.Native" />
     <Reference Include="Microsoft.SPOT.Net" />
     <Reference Include="NeonMika.Util">
       <HintPath>..\NeonMika.Util\bin\Debug\NeonMika.Util.dll</HintPath>
     </Reference>
+    <Reference Include="NetworkConfig">
+      <HintPath>..\NetworkConfig\bin\Debug\NetworkConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="SecretLabs.NETMF.Hardware.NetduinoPlus, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="StatusLED, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\StatusLED\bin\Debug\StatusLED.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO" />
+    <Reference Include="TriggerConfig">
+      <HintPath>..\TriggerConfig\bin\Debug\TriggerConfig.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx" />

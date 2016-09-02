@@ -39,11 +39,10 @@ namespace NeonMika.Webserver.Responses.ComplexResponses
         /// <returns>True if 200_OK was sent, otherwise false</returns>
         public override bool SendResponse(Request e)
         {
-            Debug.Print(Debug.GC(true).ToString());
-            string index = Properties.Resources.GetString(Properties.Resources.StringResources.indexHTML);       
-            Send200_OK("text/html", index.Length, e.Client);
-            SendData(e.Client,Encoding.UTF8.GetBytes(index));
-            index = null;
+            string pathToConfig = @"mainpage.html";
+            string index = "<html><head><script>window.location=" + "\"" + pathToConfig + "\"" + "</script>" +
+                "</head><body></body></html>";
+            SendData(e.Client, Encoding.UTF8.GetBytes(index));
             return true;
         }
     }

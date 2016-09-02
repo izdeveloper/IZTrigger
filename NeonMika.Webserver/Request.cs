@@ -5,6 +5,7 @@ using System.Net;
 using System.Diagnostics;
 using System.IO;
 using System.Collections;
+using Laser;
 
 namespace NeonMika.Webserver
 {
@@ -22,6 +23,26 @@ namespace NeonMika.Webserver
         protected string _url;
         protected Hashtable _getArguments = new Hashtable();
         protected Hashtable _headers = new Hashtable();
+
+        private Laser.Laser _laserObject;
+        public void setLaser(Laser.Laser obj)
+        {
+            _laserObject = obj;
+        }
+        public Laser.Laser getLaser()
+        {
+            return _laserObject;
+        }
+
+        private DistanceValue.DistanceValueClass _lidarDistance;
+        public void setLidarDistance(DistanceValue.DistanceValueClass obj)
+        {
+            _lidarDistance = obj;
+        }
+        public DistanceValue.DistanceValueClass getLidarDistance()
+        {
+            return _lidarDistance;
+        }
 
         /// <summary>
         /// All header lines

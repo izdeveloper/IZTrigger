@@ -15,6 +15,8 @@ namespace NeonMika.Webserver.Responses
     /// </summary>
     public class FileResponse : Response
     {
+        private int _dirLength = 3;
+
         public FileResponse(String name = "FileResponse")
             : base(name)
         { }
@@ -28,6 +30,7 @@ namespace NeonMika.Webserver.Responses
         {
             string filePath = e.URL;
             bool isDirectory = false;
+            filePath = "/SD/" + e.URL;
             return CheckFileDirectoryExist(ref filePath, out isDirectory);
         }
 
@@ -41,7 +44,7 @@ namespace NeonMika.Webserver.Responses
             string filePath = "";
             using (NeonMika.Util.ExtensionMethods em = new ExtensionMethods())
             {
-                 filePath = em.Replace(e.URL, '/', '\\');
+                filePath = em.Replace("/SD/"+e.URL, '/', '\\');
             }
             bool isDirectory = false;
 
@@ -68,7 +71,10 @@ namespace NeonMika.Webserver.Responses
 
                 foreach (string d in Directory.GetDirectories(filePath))
                 {
-                    send = "<a href=\"http:\\\\" + interf.IPAddress + d + "\" class=\"a1\">" + d + "</a><br/>";
+                    string dpath = d.Substring(_dirLength, d.Length - _dirLength);
+                    
+                  //  send = "<a href=\"http:\\\\" + interf.IPAddress + dpath + "\" class=\"a1\">" + d + "</a><br/>";
+                    send = "<a href=\""+ dpath + "\" class=\"a1\">" + d + "</a><br/>";
                     if (SendData(e.Client, Encoding.UTF8.GetBytes(send)) == 0)
                         return false;
                 }
@@ -77,7 +83,9 @@ namespace NeonMika.Webserver.Responses
 
                 foreach (string f in Directory.GetFiles(filePath))
                 {
-                    send = "<a href=\"http:\\\\" + interf.IPAddress + f + "\" class=\"a2\">" + f + "</a><br/>";
+                    string fname = f.Substring(_dirLength, f.Length - _dirLength);
+                    // send = "<a href=\"http:\\\\" + interf.IPAddress + fname + "\" class=\"a2\">" + f + "</a><br/>";
+                    send = "<a href=\""+ fname + "\" class=\"a2\">" + f + "</a><br/>";
                     if (SendData(e.Client, Encoding.UTF8.GetBytes(send)) == 0)
                         return false;
                 }

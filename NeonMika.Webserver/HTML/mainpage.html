@@ -416,16 +416,26 @@
 		<div class="w3-row">
 
 			<div  class="w3-col  s2 m2 l2  w3-left enable-trigger">
-					<p id="trigger-disable-text-ip" class="text-padding">
+					<p id="trigger-disable-text-ip" class="input-camera-trigger text-padding">
 						ALPR Camera IP address
 					</p>
 			</div>
 			<div class="w3-col  s2 m2 l2  w3-left enable-trigger">
 					<p>
-						<input id="input-camera-ip" type="text" name="input-camera-ip" class="camera-ip">
+						<input id="input-camera-ip" class="input-camera-trigger camera-ip" type="text" name="input-camera-ip">
 					</p>
 			</div>
-			<div  class="w3-col  s1 m1 l1  w3-left">
+			<div  class="w3-col  s1 m1 l1  w3-left enable-trigger">
+					<p id="trigger-disable-text-port" class="input-camera-trigger">
+						ALPR Camera Port
+					</p>
+			</div>
+			<div class="w3-col  s1 m1 l1  w3-center enable-trigger">
+					<p>
+						<input id="input-camera-port" class="input-camera-trigger camera-port" type="text" name="input-camera-port" size="5">
+					</p>
+			</div>			
+			<div  class="w3-col  s2 m2 l2  w3-left">
 					<p>
 						Disable TCP/IP Trigger
 					</p>
@@ -439,13 +449,13 @@
 		<div class="w3-row">
 
 			<div  class="w3-col  s2 m2 l2  w3-left enable-trigger">
-					<p id="trigger-disable-text-ttl" class="text-padding">
+					<p id="trigger-disable-text-ttl" class="input-ttl-trigger text-padding">
 						TTL Trigger Length in ms
 					</p>
 			</div>
 			<div class="w3-col  s2 m2 l2  w3-left enable-trigger">
 					<p>
-						<input id="input-ttl-length" type="text" name="input-ttl-length" class="input-ttl-length" size="5">
+						<input id="input-ttl-length" type="text" name="input-ttl-length" class="input-ttl-trigger input-ttl-length" size="5">
 					</p>
 			</div>
 			<div  class="w3-col  s1 m1 l1  w3-left">
@@ -462,13 +472,13 @@
 		<div class="w3-row">
 
 			<div  class="w3-col  s2 m2 l2  w3-left enable-trigger">
-					<p id="trigger-disable-text-stop" class="text-padding">
+					<p id="trigger-disable-text-stop" class="input-stop-trigger text-padding">
 						Time to Consider Stopped Vehicle ms
 					</p>
 			</div>
 			<div class="w3-col  s2 m2 l2  w3-left enable-trigger">
 					<p>
-						<input id="input-stop-time" type="text" name="input-stop-time" class="input-stop-time" size="2000">
+						<input id="input-stop-time" type="text" name="input-stop-time" class="input-stop-trigger input-stop-time">
 					</p>
 			</div>
 			<div  class="w3-col  s1 m1 l1  w3-left">
@@ -532,6 +542,7 @@ $(document).ready(function(){
 	$("#setup-image").hide();
 	
 	showNetworkSystem(false);
+	showTrigger(false);
 	
 	openConfigTab("network");
 	dhcpChange();
@@ -540,17 +551,17 @@ $(document).ready(function(){
 	//$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 	
 	// Add Event Handlers 
-	$("#trigger-disable-ip").click(disableTrigger);
-	$("#trigger-disable-ttl").click(disableTrigger);
+	$("#input-camera-trigger").click(disableTrigger);
+	$("#input-ttl-trigger").click(disableTrigger);
 	$("#start-stop-setup").click(startStopSetup);
-	$("#trigger-disable-stop").click(disableTrigger);
+	$("#input-stop-trigger").click(disableTrigger);
 	$("#submit-no-vehicle").click(submitNoVehicleDistance);
 	
 	// Submit Network and System Configuration
 	$("#submit-network").click(submitNetwork);
 	
 	// Submit Trigger Info
-	$("#submit-trigger")click(submitTrigger);
+	$("#submit-trigger").click(submitTrigger);
 	
 	// apply mask to ip address fields
 	 //  $("#input-static-ip").mask("999.999.999.999");
@@ -737,22 +748,29 @@ function submitNoVehicleDistance()
 
 function disableTrigger(param)
 {
-	var e = this;
-	if ($("#trigger-disable-"+e.value).is(':checked'))
+	var checked = false;
+	var id = "";
+	if (param.type != null && param.type == "click" ) // param is event object 
 	{
-		$("#trigger-disable-param-"+e.value).removeClass("enable-trigger");
-		$("#trigger-disable-param-"+e.value).addClass("disable-trigger");
-		$("#trigger-disable-text-"+e.value).removeClass("enable-trigger");
-		$("#trigger-disable-text-"+e.value).addClass("disable-trigger");
-		$("#trigger-disable-param-"+e.value).prop('disabled', true);
+		checked  = param.currentTarget.checked;
+		id = param.currentTarget.id;
 	}
 	else
 	{
-		$("#trigger-disable-param-"+e.value).removeClass("disable-trigger");
-		$("#trigger-disable-param-"+e.value).addClass("enable-trigger");
-		$("#trigger-disable-text-"+e.value).removeClass("disable-trigger");
-		$("#trigger-disable-text-"+e.value).addClass("enable-trigger");
-		$("#trigger-disable-param-"+e.value).prop('disabled', false);
+		checked  = $("#"+param).is(":checked");
+		id = param;
+	}
+	if (checked == true)
+	{
+		$( "."+id ).removeClass("enable-trigger");
+		$( "."+id ).addClass("disable-trigger");
+		// $("#trigger-disable-param-"+e.value).prop('disabled', true);
+	}
+	else
+	{
+		$( "."+id ).removeClass("disable-trigger");
+		$( "."+id ).addClass("enable-trigger");
+		// $("#trigger-disable-param-"+e.value).prop('disabled', false);
 	}
 }
 
@@ -842,8 +860,10 @@ function submitTrigger ()
 	
 	$("#input-set-no-vehicle").removeClass("iz-ip-error");
 	$("#input-camera-ip").removeClass("iz-ip-error");
+	$("#input-camera-port").removeClass("iz-ip-error");
 	$("#input-ttl-length").removeClass("iz-ip-error");
 	$("#input-stop-time").removeClass("iz-ip-error");
+	
 	
 	if ($("#input-set-no-vehicle").val() == "")
 	{
@@ -861,13 +881,30 @@ function submitTrigger ()
 		if ( ValidateIPaddress ("#input-camera-ip") == false )
 			return;
 		newSettings["camera_ip"] = $("#input-camera-ip").val();
-		newSettings["camera-trigger"] = 0;
+		newSettings["camera_trigger"] = 0;
 	}
 	else
 	{
-		newSettings["camera_ip"] = "";
-		newSettings["camera-trigger"] = 1;
+		newSettings["camera_ip"] = $("#input-camera-ip").val();
+		newSettings["camera_trigger"] = 1;
 	}
+	
+	if ($("#input-camera-trigger").is(":checked") == false)
+	{
+		if ( isNumber($("#input-camera-port").val()) == false)
+		{
+			errorMessage(getText("port_number_error"));
+			$("#input-camera-port").addClass("iz-ip-error");
+			return;
+		}
+		newSettings["camera_port"] = $("#input-camera-port").val();
+		newSettings["camera_trigger"] = 0;
+	}
+	else
+	{
+		newSettings["camera_port"] = $("#input-camera-port").val();
+		newSettings["camera_trigger"] = 1;
+	}	
 	
 	if ($("#input-ttl-trigger").is(":checked") == false)
 	{	
@@ -882,7 +919,7 @@ function submitTrigger ()
 	}
 	else
 	{
-		newSettings["ttl_length"] = "0";
+		newSettings["ttl_length"] = $("#input-ttl-length").val();
 		newSettings["ttl_trigger"] = 1;
 	}
 	if ($("#input-stop-trigger").is(":checked") == false)
@@ -898,7 +935,7 @@ function submitTrigger ()
 	}
 	else
 	{
-		newSettings["stop_time"] = "0";
+		newSettings["stop_time"] = $("#input-stop-time").val();
 		newSettings["stop_trigger"] = 1;		
 	}
 	
@@ -921,9 +958,38 @@ function submitTrigger ()
 	
 }
 
-function showTrigger()
+function showTrigger(enableAlert)
 {
-	
+	$.ajax
+	({
+		url: "showtrigger",		 	
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",	
+		success: function (event)
+		{			
+			$("#input-set-no-vehicle").val(event.set_no_vehicle);
+			$("#input-camera-ip").val(event.camera_ip);
+			$("#input-camera-port").val(event.camera_port);
+			event.camera_trigger == "1"?$("#input-camera-trigger").prop('checked', true): $("#input-camera-trigger").prop('checked', false);
+			disableTrigger("input-camera-trigger");
+			$("#input-ttl-length").val(event.ttl_length);
+			event.ttl_trigger == "1"?$("#input-ttl-trigger").prop('checked', true): $("#input-ttl-trigger").prop('checked', false);
+			disableTrigger("input-ttl-trigger");
+			$("#input-stop-time").val(event.stop_time);
+			event.stop_trigger == "1"?$("#input-stop-trigger").prop('checked', true): $("#input-stop-trigger").prop('checked', false);
+			disableTrigger("input-stop-trigger");
+			if (enableAlert == true)
+			{
+				okMessage(getText("ok_save_trigger"));
+				rebootDevice();
+			}
+		},
+		error: function(xhr)
+		{				
+			errorMessage(getText("gettrigger_error"));			 
+		}
+	})
 }
 
 function errorMessage(text)
@@ -959,10 +1025,13 @@ function getText(textID)
 		ok_laser_on: ["Callibration Pointer is turned ON. Start Callibration"],
 		ok_laser_off: ["Callibration Pointer is turned OFF. Callibration is done"],
 		distance_error: ["Distance without a vehicle is not set. Run callibration and set the value"],
-		ttl_length_error: ["Trigger Length must be a number"],
-		stop_time_error: ["Stop time value must be a numbert"],
-		savetrigger_error: ["Failed to save the trigger configuration"];
-		
+		ttl_length_error: ["Trigger Time Length must be a number"],
+		stop_time_error: ["Stop time value must be a number"],
+		savetrigger_error: ["Failed to save the trigger configuration"],
+		ok_save_trigger:["Trigger Configuration Saved. Robooting ..."],
+		savetrigger_error: ["Saving Trigger Configuration has Failed. Please try again"],
+		gettrigger_error: ["Failed to get Trigger Configuration"],
+		port_number_error: ["Camera TCP/IP Port must be a number"]
 	}
 	return text[textID][lang];
 }

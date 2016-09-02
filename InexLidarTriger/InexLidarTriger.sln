@@ -29,7 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistanceValue", "..\Distanc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusLED", "..\StatusLED\StatusLED.csproj", "{FF9B4CDC-2198-4AF7-B553-19005D9EC741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaserPointer", "..\LaserPointer\LaserPointer.csproj", "{0E82C844-449C-42D1-99FF-81FAA66295E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkConfig", "..\NetworkConfig\NetworkConfig.csproj", "{B61B842B-EEDA-448C-B7D2-8DF4418C5998}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Laser", "..\Laser\Laser.csproj", "{1F6DFAF8-83A6-435E-A464-9DAE6D6BB318}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriggerConfig", "..\TriggerConfig\TriggerConfig.csproj", "{221C8BDA-4269-4657-B649-6082666F2E08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +71,18 @@ Global
 		{FF9B4CDC-2198-4AF7-B553-19005D9EC741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF9B4CDC-2198-4AF7-B553-19005D9EC741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF9B4CDC-2198-4AF7-B553-19005D9EC741}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E82C844-449C-42D1-99FF-81FAA66295E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E82C844-449C-42D1-99FF-81FAA66295E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E82C844-449C-42D1-99FF-81FAA66295E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E82C844-449C-42D1-99FF-81FAA66295E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B61B842B-EEDA-448C-B7D2-8DF4418C5998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B61B842B-EEDA-448C-B7D2-8DF4418C5998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B61B842B-EEDA-448C-B7D2-8DF4418C5998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B61B842B-EEDA-448C-B7D2-8DF4418C5998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6DFAF8-83A6-435E-A464-9DAE6D6BB318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6DFAF8-83A6-435E-A464-9DAE6D6BB318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6DFAF8-83A6-435E-A464-9DAE6D6BB318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6DFAF8-83A6-435E-A464-9DAE6D6BB318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{221C8BDA-4269-4657-B649-6082666F2E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{221C8BDA-4269-4657-B649-6082666F2E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{221C8BDA-4269-4657-B649-6082666F2E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{221C8BDA-4269-4657-B649-6082666F2E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

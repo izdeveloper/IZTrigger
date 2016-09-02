@@ -52,19 +52,11 @@ namespace InexLidar
             
         }
         */
-            DistanceValue.DistanceValueClass dv = new DistanceValue.DistanceValueClass();
 
-            // start lidar interrupt 
-            LidarReader.LidarReader lidar_reader = new LidarReader.LidarReader(60, 10, 15, 20000000);
-            lidar_reader.setDistanceValueLocation(dv);
             
 
             Server WebServer = new Server();
-            WebServer.setInterruptPort(lidar_reader.getInterruptPort());
-            WebServer.setDistanceValue(dv);
             WebServer.Start(80, false, "192.168.2.185", "255.255.255.0", "192.168.2.1", "NETDUINOPLUS");
-
-            lidar_reader.Start();
 
             Debug.Print("freemem: " + Debug.GC(true));
 
