@@ -53,8 +53,6 @@ namespace InexLidar
         }
         */
 
-            
-
             Server WebServer = new Server();
             WebServer.Start(80, false, "192.168.2.185", "255.255.255.0", "192.168.2.1", "NETDUINOPLUS");
 

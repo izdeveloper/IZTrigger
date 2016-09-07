@@ -45,10 +45,9 @@ namespace NeonMika.Webserver.Responses.ComplexResponses
                             }
                         }
                     }
-                    //  File.Move(fileTmp, filePath);
                     Debug.Print("Network Saved");
                     // Configure Network Settings
-                    NetworkConfig.NetworkConfig nc = new NetworkConfig.NetworkConfig("\\SD\\config.txt");
+                    NetworkConfig.NetworkConfig nc = new NetworkConfig.NetworkConfig(filePath);
                     nc.configNetworkSystem();
                 }
                 catch (Exception ex)

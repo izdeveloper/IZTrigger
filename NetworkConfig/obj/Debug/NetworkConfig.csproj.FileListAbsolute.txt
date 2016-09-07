@@ -26,7 +26,6 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\bin\Debug\le\NetworkC
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\bin\Debug\le\NetworkConfig.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\bin\Debug\be\NetworkConfig.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\bin\Debug\be\NetworkConfig.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\obj\Debug\TinyCLR_DebugReferences.cache
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\obj\Debug\NetworkConfig.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\obj\Debug\NetworkConfig.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\NetworkConfig\obj\Debug\be\NetworkConfig.pe

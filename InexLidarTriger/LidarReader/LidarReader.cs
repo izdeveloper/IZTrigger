@@ -123,6 +123,7 @@ namespace LidarReader
         {
             return LastDistance;
         }
+
         public  void  inport_OnInterrupt(uint data1, uint data2, DateTime time)
         {
             //_inport.Dispose();

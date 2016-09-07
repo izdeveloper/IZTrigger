@@ -76,12 +76,12 @@ namespace TriggerConfig
                         Debug.Print("Exeption ex=" + ex.ToString());
                     }
                     SetNoVehicle = Convert.ToDouble((string)hashtable["set_no_vehicle"]);
-                    CameraIP = (string)hashtable["camera_ip"];
-                    CameraPort = Int32.Parse((string)hashtable["camera_port"]);
+                    CameraIP = hashtable["camera_ip"] == null ? (string)_defaults["camera_ip"] : (string)hashtable["camera_ip"];
+                    CameraPort = hashtable["camera_port"] == null? Int32.Parse((string)_defaults["camera_port"]): Int32.Parse((string)hashtable["camera_port"]);
                     CameraTrigger = (string)hashtable["camera_trigger"] == "0" ? false : true;
-                    TTLLength = Convert.ToDouble((string)hashtable["ttl_length"]);
+                    TTLLength = hashtable["ttl_length"] == null ? Convert.ToDouble((string)_defaults["ttl_length"]):Convert.ToDouble((string)hashtable["ttl_length"]);
                     TTLTrigger = (string)hashtable["ttl_trigger"] == "0" ? false : true;
-                    StopTime = Convert.ToDouble((string)hashtable["stop_time"]);
+                    StopTime = hashtable["stop_time"] == null ? Convert.ToDouble((string)hashtable["stop_time"]): Convert.ToDouble((string)hashtable["stop_time"]);
                     StopTrigger = (string)hashtable["stop_trigger"] == "0" ? false : true;
                 }
             }

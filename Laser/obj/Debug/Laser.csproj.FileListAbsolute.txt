@@ -49,10 +49,10 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\bin\Debug\SecretLabs.NETMF.Ha
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\bin\Debug\SecretLabs.NETMF.Hardware.Netduino.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\bin\Debug\SecretLabs.NETMF.Hardware.NetduinoPlus.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\bin\Debug\SecretLabs.NETMF.Hardware.Netduino.pdb
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\TinyCLR_DebugReferences.cache
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\Laser.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\Laser.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\be\Laser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\be\Laser.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\le\Laser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\le\Laser.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\Laser.csprojResolveAssemblyReference.cache

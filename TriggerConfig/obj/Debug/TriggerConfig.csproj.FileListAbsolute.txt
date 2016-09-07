@@ -32,3 +32,5 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\TriggerConfig\obj\Debug\be\TriggerC
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\TriggerConfig\obj\Debug\be\TriggerConfig.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\TriggerConfig\obj\Debug\le\TriggerConfig.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\TriggerConfig\obj\Debug\le\TriggerConfig.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\TriggerConfig\obj\Debug\TriggerConfig.csprojResolveAssemblyReference.cache
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\TriggerConfig\obj\Debug\TinyCLR_DebugReferences.cache

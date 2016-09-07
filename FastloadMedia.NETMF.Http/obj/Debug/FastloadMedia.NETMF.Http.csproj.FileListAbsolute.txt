@@ -60,7 +60,6 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\bin\Debug\
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\bin\Debug\le\FastloadMedia.NETMF.Http.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\bin\Debug\be\FastloadMedia.NETMF.Http.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\bin\Debug\be\FastloadMedia.NETMF.Http.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\obj\Debug\TinyCLR_DebugReferences.cache
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\obj\Debug\FastloadMedia.NETMF.Http.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\obj\Debug\FastloadMedia.NETMF.Http.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\FastloadMedia.NETMF.Http\obj\Debug\be\FastloadMedia.NETMF.Http.pe

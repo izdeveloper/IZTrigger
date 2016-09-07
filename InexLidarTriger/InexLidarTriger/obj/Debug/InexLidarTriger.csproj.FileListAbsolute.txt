@@ -230,10 +230,6 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\InexLidarTriger.csproj.GenerateResource.Cache
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\InexLidarTriger.Resources.tinyresources
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\TinyResGen.cache
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\be\InexLidarTriger.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\be\InexLidarTriger.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\le\InexLidarTriger.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\le\InexLidarTriger.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\InexLidarTriger.exe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\InexLidarTriger.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin\Debug\LE\Toolbox.NETMF.NET.Core.pe
@@ -290,3 +286,8 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin\Debug\Toolbox.NETMF.NET.Core.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin\Debug\Toolbox.NETMF.NET.Integrated.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin\Debug\Toolbox.NETMF.Core.pdb
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\TinyCLR_DebugReferences.cache
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\be\InexLidarTriger.pe
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\be\InexLidarTriger.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\le\InexLidarTriger.pe
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\le\InexLidarTriger.pdbx

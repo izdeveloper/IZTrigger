@@ -50,7 +50,6 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\bin\Debug\SecretLabs.NETM
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\bin\Debug\SecretLabs.NETMF.Hardware.Netduino.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\bin\Debug\SecretLabs.NETMF.Hardware.NetduinoPlus.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\bin\Debug\SecretLabs.NETMF.Hardware.Netduino.pdb
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\TinyCLR_DebugReferences.cache
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\StatusLED.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\StatusLED.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\be\StatusLED.pe

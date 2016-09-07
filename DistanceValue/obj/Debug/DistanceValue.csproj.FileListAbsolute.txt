@@ -26,7 +26,6 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\bin\Debug\le\Distance
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\bin\Debug\le\DistanceValue.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\bin\Debug\be\DistanceValue.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\bin\Debug\be\DistanceValue.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\obj\Debug\TinyCLR_DebugReferences.cache
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\obj\Debug\DistanceValue.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\obj\Debug\DistanceValue.pdb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\DistanceValue\obj\Debug\be\DistanceValue.pe
