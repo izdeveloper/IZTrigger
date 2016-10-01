@@ -56,3 +56,4 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\be\StatusLED.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\be\StatusLED.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\le\StatusLED.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\le\StatusLED.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\StatusLED\obj\Debug\StatusLED.csprojResolveAssemblyReference.cache

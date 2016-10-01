@@ -1,0 +1,16 @@
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\le\XMLParser.dll
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\be\XMLParser.dll
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\le\XMLParser.pdb
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\be\XMLParser.pdb
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\XMLParser.dll
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\XMLParser.pdb
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\le\XMLParser.pe
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\le\XMLParser.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\be\XMLParser.pe
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\be\XMLParser.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\be\XMLParser.pe
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\be\XMLParser.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\le\XMLParser.pe
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\le\XMLParser.pdbx
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\XMLParser.dll
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\XMLParser.pdb

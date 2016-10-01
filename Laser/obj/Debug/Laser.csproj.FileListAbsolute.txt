@@ -55,4 +55,3 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\be\Laser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\be\Laser.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\le\Laser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\le\Laser.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\Laser\obj\Debug\Laser.csprojResolveAssemblyReference.cache

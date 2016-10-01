@@ -6,6 +6,7 @@ using Microsoft.SPOT.Hardware;
 using Math = System.Math;
 using SecretLabs.NETMF.Hardware.NetduinoPlus;
 using DistanceValue;
+using StatusLED;
 
 namespace LidarReader
 {
@@ -36,6 +37,7 @@ namespace LidarReader
         private bool _ttlTrigger = true;
         private double _stopTime = 20000000;
         private bool _stopTrigger = false;
+        private StatusLED.StatusLED _statusLED;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         OutputPort _oport;
@@ -43,7 +45,9 @@ namespace LidarReader
         public InterruptPort _inport;
 
         // TriggerSender thread objects
-        private TriggerSender _ts; 
+        private TriggerSender _ts;
+
+        private int _interruptDisableCount = 0;
 
         public LidarReader(double setNoVehicle, double sensitivy, double trigger_sensetivity)
         {
@@ -57,14 +61,45 @@ namespace LidarReader
             _triggerSensetivity = trigger_sensetivity;
             _stoppedVehicleHappened = false;
             _distanceValueLocation = null;
+            _interruptDisableCount = 0;
 
             // assign port , but disable interrupts , will be enabled in the start function
             _oport = new OutputPort(Pins.GPIO_PIN_D2, true);
             _inport = new InterruptPort(Pins.GPIO_PIN_D1, true, Port.ResistorMode.Disabled, Port.InterruptMode.InterruptEdgeBoth);
-            _inport.DisableInterrupt();
 
+
+            /*
+            // Manualy set interrupot cunt before
+            lock (_inport)
+            {
+                _interruptDisableCount++;
+                _inport.DisableInterrupt();
+                Debug.Print("lr" + " Disable: " + _interruptDisableCount);
+            }
+             */
         }
 
+        public void disableInterrupt (string s)
+        {
+            lock (_inport)
+            {
+                _interruptDisableCount++;
+                _inport.DisableInterrupt();
+                // Debug.Print(s+" Disable: " + _interruptDisableCount);
+            }
+        }
+
+        public void enableInterrupt(string s)
+        {
+            lock (_inport)
+            {
+                _interruptDisableCount--;
+                if (_interruptDisableCount == 0)
+                    _inport.EnableInterrupt();
+                // Debug.Print(s+ " Enable: " + _interruptDisableCount);
+            }
+
+        }
 
         public void setTTLTriger(double ttlLength, bool ttlTrigger)
         {
@@ -84,18 +119,23 @@ namespace LidarReader
             /*
              * Stopped time configuration is in milliseconds,
              * the time resolution is in microseconds,
-             * so we have to multiply millisecond by 1000
+             * so we have to multiply millisecond by 10000
              * 
              */
             _stopTime = stopTime * 10000;
             _stopTrigger = stopTrigger;
 
         }
-
+        public void setStatusLED(StatusLED.StatusLED statusLED)
+        {
+            _statusLED = statusLED;
+        }
         public void Start ()
         {
             // start trigger sender thread
             _ts = new TriggerSender(_cameraIP, _cameraPort,_cameraTrigger, _ttlLength, _ttlTrigger, _stopTrigger);
+            _ts.setInterruptPort(this);
+            _ts.setStatusLED(_statusLED);
             Thread oThread = new Thread(new ThreadStart(_ts.SendTrigger));
             oThread.Start();
 
@@ -104,6 +144,7 @@ namespace LidarReader
             _inport.OnInterrupt += inport_OnInterrupt;
             _oport.Write(false);
             _inport.EnableInterrupt();
+         //   _inport.DisableInterrupt();
             
             // ======================  DISABLE for DEBUG =======================
 
@@ -129,25 +170,9 @@ namespace LidarReader
             //_inport.Dispose();
             long trigger_time = 0;
 
+            this.disableInterrupt("interrupt");
             try
             {
-                _inport.DisableInterrupt();
-            }
-            catch (Exception ex)
-            {
-                Debug.Print("ERROR => LidarRead exception");
-                _inport.Dispose();
-                _inport = new InterruptPort(Pins.GPIO_PIN_D3, true, Port.ResistorMode.Disabled, Port.InterruptMode.InterruptEdgeBoth);
-            }
-            
-            
-
-       //     _inport.Dispose();
-
-            // Debug.GC(true);
-            try
-            {
-                // Debug.Print("data2: " + data2+" data1"+data1);
                 if (data2 == 0)
                 {
                     LastDistance = (time.Ticks - _mLidarStartTime) / 100.0;
@@ -177,7 +202,7 @@ namespace LidarReader
                                 {
                                     Debug.Print("Stopped Vehicle Trigger: " + LastDistance);
                                     // Sent notification to the trigger thread that vehicle stopped 
-                                    _ts.triggersQ.Enqueue("S");
+                                    _ts.triggersQ.Enqueue("S "+trigger_time);
                                     _ts.autoEvent.Set();
                                 }
                                 _stoppedVehicleHappened = true;
@@ -197,7 +222,7 @@ namespace LidarReader
                             led.Write(false);
 
                             // Sent notification to the trigger thread
-                            _ts.triggersQ.Enqueue("T"+trigger_time);
+                            _ts.triggersQ.Enqueue("T "+trigger_time);
                             _ts.autoEvent.Set();
                         }
 
@@ -223,8 +248,7 @@ namespace LidarReader
             }
 
             Debug.GC(true);
-          //  _inport = new InterruptPort(Pins.GPIO_PIN_D3, true, Port.ResistorMode.Disabled, Port.InterruptMode.InterruptEdgeBoth);
-            _inport.EnableInterrupt();
+            this.enableInterrupt("interrupt");
         }
 
         public void Dispose()

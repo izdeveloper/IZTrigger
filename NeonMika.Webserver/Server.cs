@@ -113,7 +113,8 @@ namespace NeonMika.Webserver
             _lidar_reader.setTTLTriger(tc.TTLLength, tc.TTLTrigger);
             _lidar_reader.setIPTrigger(tc.CameraIP, tc.CameraPort, tc.CameraTrigger);
             _lidar_reader.setStopTrigger(tc.StopTime, tc.StopTrigger);
-            _inport = _lidar_reader.getInterruptPort();
+            _lidar_reader.setStatusLED(_statusLED);
+            // _inport = _lidar_reader.getInterruptPort();
 
 
             // print the settings
@@ -223,7 +224,7 @@ namespace NeonMika.Webserver
                      using (Socket clientSocket = listeningSocket.Accept())
                     {
                         _statusLED.blueLED();
-                        _inport.DisableInterrupt();
+                        _lidar_reader.disableInterrupt("server");
                         //Wait to get the bytes in the sockets "available buffer"
                         int availableBytes = AwaitAvailableBytes(clientSocket);
 
@@ -272,7 +273,7 @@ namespace NeonMika.Webserver
                             Debug.Print("Request finished");
                             Debug.Print("End Request, freemem: " + Debug.GC(true));
                             _statusLED.greenLED();
-                            _inport.EnableInterrupt();
+                            _lidar_reader.enableInterrupt("server");
                         }
                     }
                 }

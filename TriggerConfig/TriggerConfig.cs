@@ -28,7 +28,7 @@ namespace TriggerConfig
             else
                 _triggerConfig = "\\SD\\trigger.txt";
             _defaults = new Hashtable();
-            _defaults.Add("set_no_vehicle", "0");
+            _defaults.Add("set_no_vehicle", "400");
             _defaults.Add("camera_ip", "0.0.0.0");
             _defaults.Add("camera_port", "13001");
             _defaults.Add("camera_trigger", "1");

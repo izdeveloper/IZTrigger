@@ -37,12 +37,29 @@ namespace StatusLED
             _blue.Write(true);
         }
 
+        public void yellowLED()
+        {
+            _red.Write(true);
+            _green.Write(true);
+            _blue.Write(false);
+
+        }
+
+        public void cyanLED()
+        {
+            _red.Write(false);
+            _green.Write(true);
+            _blue.Write(true);
+
+        }
+
         public void allLEDOff()
         {
             _red.Write(false);
             _green.Write(false);
             _blue.Write(false);
         }
+
         public void allLEDOn()
         {
             _red.Write(true);
