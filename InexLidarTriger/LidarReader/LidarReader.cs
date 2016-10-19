@@ -137,10 +137,10 @@ namespace LidarReader
             _ts.setInterruptPort(this);
             _ts.setStatusLED(_statusLED);
             Thread oThread = new Thread(new ThreadStart(_ts.SendTrigger));
-            oThread.Start();
+           
 
             // ======================  DISABLE for DEBUG =======================
-           
+             oThread.Start();
             _inport.OnInterrupt += inport_OnInterrupt;
             _oport.Write(false);
             _inport.EnableInterrupt();

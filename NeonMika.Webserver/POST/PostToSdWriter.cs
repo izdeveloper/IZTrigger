@@ -29,14 +29,25 @@ namespace NeonMika.Webserver.POST
         /// </summary>
         /// <param name="e">The request which should be handeld</param>
         /// <returns>True if 200_OK was sent, otherwise false</returns>
-        public bool ReceiveAndSaveData(byte [] buffer, int hdr_length)
+        public bool ReceiveAndSaveData(byte [] buffer_in, int hdr_length)
         {
             Debug.Print(Debug.GC(true).ToString());
             Debug.Print(Debug.GC(true).ToString());
 
             // DEBUG
-            int data_position = buffer.Length - hdr_length;
+            int data_position = buffer_in.Length - hdr_length;
             byte[] content_start_buff = new byte[0];
+            Debug.Print("->" + new String(System.Text.Encoding.UTF8.GetChars(buffer_in)) + "<--");
+
+            // trim zeros from buffer
+            // populate foo
+            int k = buffer_in.Length - 1;
+            while (buffer_in[k] == 0)
+                --k;
+            // now buffer[i] is the last non-zero byte
+            byte[] buffer = new byte[k + 1];
+            Array.Copy(buffer_in, buffer, k + 1);
+
             if (buffer.Length > hdr_length) // copy the beginning of the content from previuos buffer
             {
                 content_start_buff = new byte[buffer.Length - hdr_length];
@@ -85,7 +96,7 @@ namespace NeonMika.Webserver.POST
             
             int newAvBytes = 0;
             int double_cr = 0;
-            byte[] _buffer;
+            byte[] _buffer = new byte[0];
             Hashtable file_hdr;
             int content_start_buff_length = content_start_buff.Length;
             String file_name = "";
@@ -94,14 +105,18 @@ namespace NeonMika.Webserver.POST
             do
             {
                 Thread.Sleep(15);
-                newAvBytes = _e.Client.Available;
-                if (newAvBytes == 0) continue;
 
-                // TODO if the newAvbytes is > than Settings.MAX_REQUESTSIZE case
-                int to_read = newAvBytes > Settings.MAX_REQUESTSIZE ? Settings.MAX_REQUESTSIZE : newAvBytes;
-                _buffer = new byte[to_read];
-
-                _e.Client.Receive(_buffer, _buffer.Length, SocketFlags.None);
+                for (int r = 0; r < 3; r++)
+                {
+                    newAvBytes = _e.Client.Available;
+                    if (newAvBytes > 0)
+                    {
+                        // TODO if the newAvbytes is > than Settings.MAX_REQUESTSIZE case
+                        int to_read = newAvBytes > Settings.MAX_REQUESTSIZE ? Settings.MAX_REQUESTSIZE : newAvBytes;
+                        _buffer = new byte[to_read];
+                        _e.Client.Receive(_buffer, _buffer.Length, SocketFlags.None);
+                    }
+                }
 
                 if (content_start_buff_length > 0)
                 {
@@ -109,6 +124,8 @@ namespace NeonMika.Webserver.POST
                     _buffer = Combine(content_start_buff, _buffer);
                     content_start_buff_length = 0;
                 }
+
+                Debug.Print("->" + new String(System.Text.Encoding.UTF8.GetChars(_buffer)) + "<--");
 
                 double_cr = FindDoubleCR(_buffer); //returns position number of the first byte after double cr
                 if (double_cr != 0)
@@ -164,20 +181,41 @@ namespace NeonMika.Webserver.POST
 
                 // write the beginning of the file
                 int total_bytes = 0;
-                content_bytes_toread -= double_cr; // double_cr points to the last cr, the content start after that
+                // check if we have read the file already
+                int boundary_position = checkEndOfContent(_buffer, byte_boundary);
+                if (boundary_position > 0)
+                    content_bytes_toread = 0; // we found end of file , nothing to read more 
+                else
+                    content_bytes_toread -= double_cr; // double_cr points to the last cr, the content start after that
 
+                // check if we have read the file already
+                
                 total_bytes += _buffer.Length - double_cr;
 
-                Debug.Print("content_bytes_toread: " + (content_bytes_toread - byte_boundary.Length - 2));
-
+               //  Debug.Print("content_bytes_toread: " + (content_bytes_toread - byte_boundary.Length - 2));
+                Debug.Print("content_bytes_toread: " + (content_bytes_toread ));
                 // write the first buffer
-                fs.Write(_buffer, double_cr, _buffer.Length - double_cr);
+                if (boundary_position != 0)
+                    fs.Write(_buffer, double_cr, _buffer.Length - double_cr - byte_boundary.Length - 2);
+                else
+                    fs.Write(_buffer, double_cr, _buffer.Length - double_cr);
 
                 // String str_d = new String(System.Text.Encoding.UTF8.GetChars(_buffer, double_cr, _buffer.Length - double_cr));
                 // Debug.Print("===>" + str_d);
 
                 while (content_bytes_toread > 0)
                 {
+                    // check if we have end boundary in the buffer already (very small files
+                    boundary_position = checkEndOfContent(_buffer, byte_boundary);
+                    if (boundary_position != 0) // we have fully read the file
+                    {
+                        Debug.Print("Found boundary position: " + boundary_position);
+                        Debug.Print("total_bytes: " + (total_bytes - 2 - byte_boundary.Length - 2));
+                        // write the last block of data
+                        fs.Write(_buffer, 0, boundary_position);
+                        break;
+                    }
+
                     Thread.Sleep(15);
                     int nb = _e.Client.Available;
                     if (nb == 0)
@@ -203,7 +241,7 @@ namespace NeonMika.Webserver.POST
 
                     content_bytes_toread -= _buffer.Length;
 
-                    int boundary_position = checkEndOfContent(_buffer, byte_boundary);
+                    boundary_position = checkEndOfContent(_buffer, byte_boundary);
                     if (boundary_position != 0)
                     {
                         Debug.Print("Found boundary position: " + boundary_position);

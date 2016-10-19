@@ -71,10 +71,6 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Deb
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Debug\BE\StatusLED.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Debug\LE\StatusLED.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Debug\BE\StatusLED.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\obj\Debug\be\LidarReader.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\obj\Debug\be\LidarReader.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\obj\Debug\le\LidarReader.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\obj\Debug\le\LidarReader.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Debug\LE\XMLParser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Debug\BE\XMLParser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\LidarReader\bin\Debug\LE\XMLParser.pdbx
