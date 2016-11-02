@@ -26,20 +26,19 @@ namespace NeonMika.Webserver.Responses.ComplexResponses
             string filePath = "\\SD";
             Hashtable reqOnDelete = e.GetArguments;
 
-            System.IO.DirectoryInfo di = new DirectoryInfo(filePath);
+            string filename = (string) reqOnDelete["param"];
 
-            foreach (FileInfo file in di.GetFiles())
-            {                
-                foreach(string item in reqOnDelete.Values)
-                {                    
-                    if(file.Name.Equals(item))               
-                    {
-                        Debug.Print("Deleting file: " + file.FullName.ToString());
-                        file.Delete();
-                    }
+
+
+            if (filename != null)
+            {
+                string fullname = filePath+"\\"+filename;
+                if (File.Exists(fullname))
+                {
+                    Debug.Print("Deleting file: " + fullname);
+                    File.Delete(fullname);
                 }
             }
-
         }
     }
 }

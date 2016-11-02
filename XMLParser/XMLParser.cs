@@ -7,7 +7,7 @@ namespace XMLParser
     public class XmlParser
     {
         private string mstrInput;
-        private string mstrName;
+        private string mstrName   ;
         private int mintCurrentPosition;
         private System.Collections.Stack mobjStack = new System.Collections.Stack();
         public XmlParser(string Input)

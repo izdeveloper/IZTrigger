@@ -49,6 +49,12 @@ namespace LidarReader
 
         private int _interruptDisableCount = 0;
 
+        // I2C 
+        private I2CDevice.Configuration _i2cConfig;
+        private I2CDevice i2c;
+        private int _i2cDistance;
+        DateTime _currentDate;
+
         public LidarReader(double setNoVehicle, double sensitivy, double trigger_sensetivity)
         {
             Debug.Print("== LidarReader constructor");
@@ -67,16 +73,9 @@ namespace LidarReader
             _oport = new OutputPort(Pins.GPIO_PIN_D2, true);
             _inport = new InterruptPort(Pins.GPIO_PIN_D1, true, Port.ResistorMode.Disabled, Port.InterruptMode.InterruptEdgeBoth);
 
+            DateTime _currentDate = DateTime.Now;
 
-            /*
-            // Manualy set interrupot cunt before
-            lock (_inport)
-            {
-                _interruptDisableCount++;
-                _inport.DisableInterrupt();
-                Debug.Print("lr" + " Disable: " + _interruptDisableCount);
-            }
-             */
+
         }
 
         public void disableInterrupt (string s)
@@ -84,7 +83,7 @@ namespace LidarReader
             lock (_inport)
             {
                 _interruptDisableCount++;
-                _inport.DisableInterrupt();
+           //     _inport.DisableInterrupt();
                 // Debug.Print(s+" Disable: " + _interruptDisableCount);
             }
         }
@@ -94,8 +93,8 @@ namespace LidarReader
             lock (_inport)
             {
                 _interruptDisableCount--;
-                if (_interruptDisableCount == 0)
-                    _inport.EnableInterrupt();
+           //     if (_interruptDisableCount == 0)
+           //         _inport.EnableInterrupt();
                 // Debug.Print(s+ " Enable: " + _interruptDisableCount);
             }
 
@@ -137,14 +136,17 @@ namespace LidarReader
             _ts.setInterruptPort(this);
             _ts.setStatusLED(_statusLED);
             Thread oThread = new Thread(new ThreadStart(_ts.SendTrigger));
-           
+
+            // Init and start I2C
+            initI2C();
+            inport_OnInterrupt();
 
             // ======================  DISABLE for DEBUG =======================
-             oThread.Start();
-            _inport.OnInterrupt += inport_OnInterrupt;
-            _oport.Write(false);
-            _inport.EnableInterrupt();
-         //   _inport.DisableInterrupt();
+            // oThread.Start();
+            //_inport.OnInterrupt += inport_OnInterrupt;
+           // _oport.Write(false);
+           // _inport.EnableInterrupt();
+           //   _inport.DisableInterrupt();
             
             // ======================  DISABLE for DEBUG =======================
 
@@ -165,90 +167,128 @@ namespace LidarReader
             return LastDistance;
         }
 
-        public  void  inport_OnInterrupt(uint data1, uint data2, DateTime time)
+        public void initI2C ()
+        {
+            _i2cConfig = new I2CDevice.Configuration(0x62, 100);
+            i2c = new I2CDevice(_i2cConfig);
+
+            int res = 0;
+
+            // reset I2C
+            byte[] command_i2c_reset = { 0x00, 0x00 };
+            I2CDevice.I2CTransaction[] i2cReset = new I2CDevice.I2CTransaction[1];
+            i2cReset[0] = I2CDevice.CreateWriteTransaction(command_i2c_reset);
+            res = i2c.Execute(i2cReset, 1000);
+            //    Debug.Print("reset res =" + res);
+            Thread.Sleep(100);
+
+
+        }
+
+        public int readI2CDistance()
+        {
+            int res = 0;
+
+            // Set I2C to read
+            byte[] command_read_with_bias = { 0x00, 0x04 };
+            //byte[] status_register = { 0x01 };
+            //byte[] status_value = { 0x01, 0x00 };
+
+            I2CDevice.I2CTransaction[] i2cReadDistance = new I2CDevice.I2CTransaction[1];
+            i2cReadDistance[0] = I2CDevice.CreateWriteTransaction(command_read_with_bias);
+            res = i2c.Execute(i2cReadDistance, 1000);
+        //    Debug.Print("Set to read res =" + res);
+            Thread.Sleep(20);
+
+            // read Distance
+            byte[] distance_addr = { 0x8f };
+            byte[] distance1 = { 0, 0 };
+            I2CDevice.I2CTransaction[] i2cRead = new I2CDevice.I2CTransaction[2];
+            i2cRead[0] = I2CDevice.CreateWriteTransaction(distance_addr);
+            i2cRead[1] = I2CDevice.CreateReadTransaction(distance1);
+            res = i2c.Execute(i2cRead, 1000);
+           // Debug.Print("distance read res =" + res);
+            _i2cDistance = distance1[0] << 8 | distance1[1];
+         //   Debug.Print("distance = " + _i2cDistance);
+            Thread.Sleep(20);
+            return _i2cDistance;
+        }
+
+        public void inport_OnInterrupt()
         {
             //_inport.Dispose();
             long trigger_time = 0;
 
             this.disableInterrupt("interrupt");
-            try
+
+            while (true)
             {
-                if (data2 == 0)
+                trigger_time = DateTime.Now.Ticks; 
+
+                try
                 {
-                    LastDistance = (time.Ticks - _mLidarStartTime) / 100.0;
-                    trigger_time = time.Ticks;
-                  //  if (LastDistance < _noVehicleDistanceRange )
-                    _distanceValueLocation.DistanceValue = LastDistance;
+                        LastDistance = readI2CDistance();
+                        _distanceValueLocation.DistanceValue = LastDistance;
 
-
-                    // Debug.Print("Distance: " + LastDistance);
-
-                    // If last measured distance less than the distance considered to be a vehicle in FOV
-                    // record it and decide if a trigger has to be sent
-                    if (LastDistance < _minValue + _sensitivy)
-                    {
-
-                        // if the new distance almost the same as the old one then don't consider it as a new trigger 
-                        if ((_lastTriggerDistance < LastDistance + _triggerSensetivity)
-                            &&
-                             (_lastTriggerDistance > LastDistance - _triggerSensetivity))
+                        // If last measured distance less than the distance considered to be a vehicle in FOV
+                        // record it and decide if a trigger has to be sent
+                        if (LastDistance < _minValue + _sensitivy)
                         {
-                            // Debug.Print("OLD Trigger: " + LastDistance);
 
-                            // if time when trigger happend first is greater than N then consider this as a stop event 
-                            if (time.Ticks - _lasttriggertime > _stopTime)
+                            // if the new distance almost the same as the old one then don't consider it as a new trigger 
+                            if ((_lastTriggerDistance < LastDistance + _triggerSensetivity)
+                                &&
+                                 (_lastTriggerDistance > LastDistance - _triggerSensetivity))
                             {
-                                if (!_stoppedVehicleHappened)
+
+                                // if time when trigger happend first is greater than N then consider this as a stop event 
+                                if (trigger_time - _lasttriggertime > _stopTime)
                                 {
-                                    Debug.Print("Stopped Vehicle Trigger: " + LastDistance);
-                                    // Sent notification to the trigger thread that vehicle stopped 
-                                    _ts.triggersQ.Enqueue("S "+trigger_time);
-                                    _ts.autoEvent.Set();
+                                    if (!_stoppedVehicleHappened)
+                                    {
+                                        Debug.Print("Stopped Vehicle Trigger: " + LastDistance);
+                                        // Sent notification to the trigger thread that vehicle stopped 
+                                        _ts.triggersQ.Enqueue("S " + trigger_time);
+                                        _ts.autoEvent.Set();
+                                    }
+                                    _stoppedVehicleHappened = true;
+                                    // _lasttriggertime = time.Ticks;
                                 }
-                                _stoppedVehicleHappened = true;
-                                // _lasttriggertime = time.Ticks;
+                            }
+                            // if mesuared distance is significanlty diffewrent from the previuos measured
+                            // distance, then consider it as a new trigger event 
+                            else
+                            {
+                                _lasttriggertime = trigger_time;
+                                _stoppedVehicleHappened = false;
+                                Debug.Print("New Trigger: " + LastDistance + " " + trigger_time);
+
+                                led.Write(true);
+                                Thread.Sleep(30);
+                                led.Write(false);
+
+                                // Sent notification to the trigger thread
+                                _ts.triggersQ.Enqueue("T " + trigger_time);
+                                _ts.autoEvent.Set();
+                            }
+
+                            if (OnDistanceChanged != null)
+                            {
+                                Debug.Print("Distance: " + LastDistance);
+                                // OnDistanceChanged(LastDistance);
                             }
                         }
-                        // if mesuared distance is significanlty diffewrent from the previuos measured
-                        // distance, then consider it as a new trigger event 
-                        else
-                        {
-                            _lasttriggertime = time.Ticks;
-                            _stoppedVehicleHappened = false;
-                            Debug.Print("New Trigger: " + LastDistance + " " + trigger_time);
 
-                            led.Write(true);
-                            Thread.Sleep(30);
-                            led.Write(false);
-
-                            // Sent notification to the trigger thread
-                            _ts.triggersQ.Enqueue("T "+trigger_time);
-                            _ts.autoEvent.Set();
-                        }
-
-                        if (OnDistanceChanged != null)
-                        {
-                            Debug.Print("Distance: " + LastDistance);
-                            // OnDistanceChanged(LastDistance);
-                        }
-                    }
-
-                    _lastTriggerDistance = LastDistance;
+                        _lastTriggerDistance = LastDistance;
                 }
-
-                else
+                catch (Exception ex)
                 {
-                    // Set time when PMW starts it cycle (rising edge)
-                    _mLidarStartTime = time.Ticks;
+                    Debug.Print(ex.Message);
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print(ex.Message);
-            }
 
-            Debug.GC(true);
-            this.enableInterrupt("interrupt");
+                Debug.GC(true);
+                this.enableInterrupt("interrupt");
+            }
         }
 
         public void Dispose()

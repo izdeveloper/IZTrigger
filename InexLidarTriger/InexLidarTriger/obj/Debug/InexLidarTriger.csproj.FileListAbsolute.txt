@@ -269,7 +269,3 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin\Debug\BE\FastloadMedia.NETMF.Http.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\bin\Debug\BE\SecretLabs.NETMF.Hardware.Netduino.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\TinyCLR_DebugReferences.cache
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\be\InexLidarTriger.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\be\InexLidarTriger.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\le\InexLidarTriger.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\InexLidarTriger\InexLidarTriger\obj\Debug\le\InexLidarTriger.pdbx
