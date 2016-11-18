@@ -8,9 +8,7 @@ C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\le\XMLParser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\le\XMLParser.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\be\XMLParser.pe
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\bin\Debug\be\XMLParser.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\be\XMLParser.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\be\XMLParser.pdbx
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\le\XMLParser.pe
-C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\le\XMLParser.pdbx
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\XMLParser.dll
 C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\XMLParser.pdb
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\XMLParser.csprojResolveAssemblyReference.cache
+C:\Users\Alex\Dropbox\Trigger\IZLidarTrigger\XMLParser\obj\Debug\TinyCLR_DebugReferences.cache
