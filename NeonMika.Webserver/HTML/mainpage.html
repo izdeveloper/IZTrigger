@@ -114,6 +114,61 @@
     cursor: pointer;
 }
 
+#table {
+    text-align: center;
+    border-collapse: collapse;
+    background-color: white;
+}
+.td {
+    background-color: #82b6f3;
+    font-size: 19px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 5px;
+}
+.tdin {
+    border: 1px solid black;
+    font-size: 18px;
+    padding: 5px;
+}
+
+#your-files{
+    display: none;
+}
+
+.btn {
+    background-color: #82b6f3;
+    display: table-cell;
+	vertical-align: middle;
+    margin: 20px 7px 20px 0;
+	padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+    float: left;
+}
+.choosefile {
+    font-size: 20px;
+	line-height: 1;
+	margin: 0;
+}
+
+.btn:hover {
+    background-color: #709ed4;
+}
+
+.subtitles {
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#logo {
+	position: absolute;
+    right: 15px;
+	top: 5px;
+}
+
 /*
 // progress bar stylesheet
 //.no-js #loader { display: none;  }
@@ -138,7 +193,16 @@
 <div id="full-content" style="display: none">
 <body class="w3-container">
 
-<h2>INEX Lidar Trigger Configuration</h2>
+<div class="w3-row">
+	<div class="w3-col s6 m6 l6 w3-left">
+		<h2>INEX Lidar Trigger Configuration</h2>
+	</div>
+	<div class="w3-col s6 m6 l6 w3-rigth">
+		<div id=logo>
+			<img src="logo.png">
+		</div>
+	</div>
+</div>
 
 <div class="w3-row">
   <a href="#" onclick="openConfigTab('network');">
@@ -512,7 +576,34 @@
 
 <div id="upload" class="w3-container config-tab">
   <h2>Firmware Upload</h2>
-  <p>Tokyo is the capital of Japan.</p>
+  <h2>Current Installed Software</h2>
+  <div class="w3-row">
+	  <div class="w3-col s3 m3 l3 w2-left">
+	      <table id="table">
+              <tr>
+                  <td class="td">File Name</td>
+                  <td class="td">Version</td>
+              </tr>
+    	  </table>
+	  </div>
+	  <div class="w3-col s9 m9 l9 w3-center">
+		  <p></p>
+	  </div>
+  </div>
+  <div class="w3-row">
+	  <div class="w3-col s1 m1 l1 w3-left">
+		  <label class="btn">
+              <p class="choosefile">Choose<br>Firmware<br>File</p>
+              <input id="your-files" type="file" value="Choose Firmware File">
+          </label>
+	  </div>
+	  <div class="w3-col s2 m2 l2 w3-center">
+		  <p class="filename"></p>
+	  </div>
+	  <div class="w3-col s9 m9 l9 w3-center">
+		  <p></p>
+	  </div>
+  </div>
 </div>
 
 <div id="error-message-box" class="error-modal">
@@ -546,6 +637,7 @@ $(document).ready(function(){
 	
 	openConfigTab("network");
 	dhcpChange();
+	createTable();
 	// add vertical tabs
 	//$('#tabs').tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
 	//$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
@@ -556,6 +648,7 @@ $(document).ready(function(){
 	$("#start-stop-setup").click(startStopSetup);
 	$("#input-stop-trigger").click(disableTrigger);
 	$("#submit-no-vehicle").click(submitNoVehicleDistance);
+	$("#your-files").change(chooseFile);
 	
 	// Submit Network and System Configuration
 	$("#submit-network").click(submitNetwork);
@@ -836,205 +929,389 @@ function showLidarDistance()
 			$("#input-no-vehicle").removeClass("iz-ip-error");
 			$("#input-no-vehicle").val(Math.round(parseFloat(event.no_vehicle)).toString());
 			if ((event.laser_status == false) && ($("#start-stop-setup").attr("iz-setup-status") == "false"))
+    {
+    turnOnOffCallibration();
+    }
+    else
+    {
+    if (event.laser_status == true)
+    setTimeout(function(){ showLidarDistance();  }, 250);
+    }
+
+    },
+    error: function() {
+    $("#input-no-vehicle").val(0);
+    $("#input-no-vehicle").addClass("iz-ip-error");
+    }
+    })
+
+    }
+
+    function submitTrigger ()
+    {
+    var newSettings = {};
+
+    $("#input-set-no-vehicle").removeClass("iz-ip-error");
+    $("#input-camera-ip").removeClass("iz-ip-error");
+    $("#input-camera-port").removeClass("iz-ip-error");
+    $("#input-ttl-length").removeClass("iz-ip-error");
+    $("#input-stop-time").removeClass("iz-ip-error");
+
+
+    if ($("#input-set-no-vehicle").val() == "")
+    {
+    errorMessage(getText("distance_error"));
+    $("#input-set-no-vehicle").addClass("iz-ip-error");
+    return;
+    }
+    else
+    {
+    newSettings["set_no_vehicle"] = $("#input-set-no-vehicle").val()
+    }
+
+    if ($("#input-camera-trigger").is(":checked") == false)
+    {
+    if ( ValidateIPaddress ("#input-camera-ip") == false )
+    return;
+    newSettings["camera_ip"] = $("#input-camera-ip").val();
+    newSettings["camera_trigger"] = 0;
+    }
+    else
+    {
+    newSettings["camera_ip"] = $("#input-camera-ip").val();
+    newSettings["camera_trigger"] = 1;
+    }
+
+    if ($("#input-camera-trigger").is(":checked") == false)
+    {
+    if ( isNumber($("#input-camera-port").val()) == false)
+    {
+    errorMessage(getText("port_number_error"));
+    $("#input-camera-port").addClass("iz-ip-error");
+    return;
+    }
+    newSettings["camera_port"] = $("#input-camera-port").val();
+    newSettings["camera_trigger"] = 0;
+    }
+    else
+    {
+    newSettings["camera_port"] = $("#input-camera-port").val();
+    newSettings["camera_trigger"] = 1;
+    }
+
+    if ($("#input-ttl-trigger").is(":checked") == false)
+    {
+    if (isNumber($("#input-ttl-length").val()) == false)
+    {
+    errorMessage(getText("ttl_length_error"));
+    $("#input-ttl-length").addClass("iz-ip-error");
+    return;
+    }
+    newSettings["ttl_length"] = $("#input-ttl-length").val();
+    newSettings["ttl_trigger"] = 0;
+    }
+    else
+    {
+    newSettings["ttl_length"] = $("#input-ttl-length").val();
+    newSettings["ttl_trigger"] = 1;
+    }
+    if ($("#input-stop-trigger").is(":checked") == false)
+    {
+    if (isNumber($("#input-stop-time").val()) == false)
+    {
+    errorMessage(getText("stop_time_error"));
+    $("#input-stop-time").addClass("iz-ip-error");
+    return;
+    }
+    newSettings["stop_time"] = $("#input-stop-time").val();
+    newSettings["stop_trigger"] = 0;
+    }
+    else
+    {
+    newSettings["stop_time"] = $("#input-stop-time").val();
+    newSettings["stop_trigger"] = 1;
+    }
+
+    // send the config
+    var request = $.ajax({
+    url: "savetrigger",
+    type: "GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    data: newSettings,
+    success: function (event)
+    {
+    showTrigger(true);
+    },
+    error: function(xhr)
+    {
+    errorMessage(getText("savetrigger_error"));
+    }
+    });
+
+    }
+
+    function showTrigger(enableAlert)
+    {
+    $.ajax
+    ({
+    url: "showtrigger",
+    type: "GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (event)
+    {
+    $("#input-set-no-vehicle").val(event.set_no_vehicle);
+    $("#input-camera-ip").val(event.camera_ip);
+    $("#input-camera-port").val(event.camera_port);
+    event.camera_trigger == "1"?$("#input-camera-trigger").prop('checked', true): $("#input-camera-trigger").prop('checked', false);
+    disableTrigger("input-camera-trigger");
+    $("#input-ttl-length").val(event.ttl_length);
+    event.ttl_trigger == "1"?$("#input-ttl-trigger").prop('checked', true): $("#input-ttl-trigger").prop('checked', false);
+    disableTrigger("input-ttl-trigger");
+    $("#input-stop-time").val(event.stop_time);
+    event.stop_trigger == "1"?$("#input-stop-trigger").prop('checked', true): $("#input-stop-trigger").prop('checked', false);
+    disableTrigger("input-stop-trigger");
+    if (enableAlert == true)
+    {
+    okMessage(getText("ok_save_trigger"));
+    rebootDevice();
+    }
+    },
+    error: function(xhr)
+    {
+    errorMessage(getText("gettrigger_error"));
+    }
+    })
+    }
+
+    function errorMessage(text)
+    {
+    var modal = $("#error-message-box");
+    var close = $("#error-message-close");
+    modal.css("display", "block");
+    $("#error-message-text").text(text);
+    close.click(function() {modal.css("display", "none");});
+    }
+
+    function okMessage(text)
+    {
+    var modal = $("#ok-message-box");
+    var close = $("#ok-message-close");
+    modal.css("display", "block");
+    $("#ok-message-text").text(text);
+    close.click(function() {modal.css("display", "none");});
+    }
+
+    function getText(textID)
+    {
+    var lang = 0;
+    var text =
+    {
+    ip_error: ["You have entered invalid IP address!"],
+    username_error: ["Username is  missing. Please enter Username" ],
+    password_error: ["Password is missing. Please enter Password"],
+    savenetwork_error: ["Saving System and Network Configuration has Failed. Please try again"],
+    getnetwork_error: ["Failed to get System and Network Configuration"],
+    ok_save_networks: ["Network and System Configuration Saved. Robooting ..."],
+    web_port_error: ["Web Server Port must be a  number and configuired"],
+    ok_laser_on: ["Callibration Pointer is turned ON. Start Callibration"],
+    ok_laser_off: ["Callibration Pointer is turned OFF. Callibration is done"],
+    distance_error: ["Distance without a vehicle is not set. Run callibration and set the value"],
+    ttl_length_error: ["Trigger Time Length must be a number"],
+    stop_time_error: ["Stop time value must be a number"],
+    savetrigger_error: ["Failed to save the trigger configuration"],
+    ok_save_trigger:["Trigger Configuration Saved. Robooting ..."],
+    savetrigger_error: ["Saving Trigger Configuration has Failed. Please try again"],
+    gettrigger_error: ["Failed to get Trigger Configuration"],
+    port_number_error: ["Camera TCP/IP Port must be a number"],
+	fileslist_error: ["Error retrieving the files"]
+    }
+    return text[textID][lang];
+    }
+
+    function createTable() {
+		var request = $.ajax({
+			url: "fileslist",
+			type: "GET",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (event)
 			{
-				turnOnOffCallibration();
+				buildTable(event);
+			},
+			error: function(xhr)
+			{
+			errorMessage(getText("fileslist_error"));
 			}
-			else
-			{	
-				if (event.laser_status == true)
-					setTimeout(function(){ showLidarDistance();  }, 250);
+			});
+	}
+		function buildTable(event) {
+			$(".subtitles").remove();
+			$(".tdin").remove();
+			var
+				str = "",
+				app = [],
+				styles = [],
+				pic = [],
+				pe = [],
+				html = [],
+				subtitle = [],
+				elements = 0,
+				name = [],
+				categories = ["JavaScript","Styles","Pictures","Html","Application"];
+			console.log(event);
+			for(var key in event) {
+				for (var i = 0; i < event[key].length; i++){
+						str = str + event[key][i];
+						if (event[key][i]==".") {
+							str = "";
+						}
+				}
+				switch(str) {
+					case "js":
+						arraypush(app);
+						break;
+					case "css":
+						arraypush(styles);
+						break;
+					case "png":
+					case "gif":
+						arraypush(pic);
+						break;
+					case "html":
+						arraypush(html);
+						break;
+					case "pe":
+						arraypush(pe);
+						break;
+				}
 			}
+			var content;
+			i = 0;
+			table(app);
+			table(styles);
+			table(pic);
+			table(html);
+			table(pe);
+			function table(name) {
+				content = "<tr><td class='subtitles' colspan='2'>" + categories[i] + "</td></tr>";
+				for(var y = 0; y < name.length; y += 2){
+					content += "<tr><td class='tdin'>" + name[y+1] + "</td><td class='tdin'>" + name[y] + "</td></tr>";
+				}
+				$("#table").append(content);
+				content = "";
+				i++;
+			}
+			function arraypush(name) {
+				name.push(key);
+				name.push(event[key].substr(4));
+				elements += 2;
+			}
+			$("#your-files").attr("type", "file");
+	}       
+	
+	function chooseFile(event) {
+		$(".filename").empty();
+		var	name;
 			
-		},
-		error: function() {
-			$("#input-no-vehicle").val(0);
-			$("#input-no-vehicle").addClass("iz-ip-error");
-		}
-	})
-		
-}
+				var doc = $('#your-files:file').files,
+					zipfile = {};
+				name = event.target.files[0].name;
+				zipfile = event.target.files[0];
+				load(zipfile);  
+			function load(zipfile){
+				if (typeof(JSZip) != 'undefined') {
+					runZip();
+				} else {
+					var script = document.createElement('script');
+					var i = 0;
+					$(".filename").empty();
+					$(".filename").append('Loading...');
+					script.onload = function() {
+						$(".filename").empty();
+						runZip();
+					};
+					script.src = "jszip.js";
+					document.getElementsByTagName('head')[0].appendChild(script);
+				}
+				function runZip() {
+					var zip = new JSZip();
+					var stringfile = zip.loadAsync(zipfile)
+						.then(function() {
+							console.log(zip);
+							var filename = [],
+								content = [],
+								i = 0,
+								abc;
 
-function submitTrigger ()
-{
-	var newSettings = {};
-	
-	$("#input-set-no-vehicle").removeClass("iz-ip-error");
-	$("#input-camera-ip").removeClass("iz-ip-error");
-	$("#input-camera-port").removeClass("iz-ip-error");
-	$("#input-ttl-length").removeClass("iz-ip-error");
-	$("#input-stop-time").removeClass("iz-ip-error");
-	
-	
-	if ($("#input-set-no-vehicle").val() == "")
-	{
-		errorMessage(getText("distance_error"));
-		$("#input-set-no-vehicle").addClass("iz-ip-error");
-		return;
-	}
-	else
-	{
-		newSettings["set_no_vehicle"] = $("#input-set-no-vehicle").val()
-	}
-	
-	if ($("#input-camera-trigger").is(":checked") == false)
-	{
-		if ( ValidateIPaddress ("#input-camera-ip") == false )
-			return;
-		newSettings["camera_ip"] = $("#input-camera-ip").val();
-		newSettings["camera_trigger"] = 0;
-	}
-	else
-	{
-		newSettings["camera_ip"] = $("#input-camera-ip").val();
-		newSettings["camera_trigger"] = 1;
-	}
-	
-	if ($("#input-camera-trigger").is(":checked") == false)
-	{
-		if ( isNumber($("#input-camera-port").val()) == false)
-		{
-			errorMessage(getText("port_number_error"));
-			$("#input-camera-port").addClass("iz-ip-error");
-			return;
-		}
-		newSettings["camera_port"] = $("#input-camera-port").val();
-		newSettings["camera_trigger"] = 0;
-	}
-	else
-	{
-		newSettings["camera_port"] = $("#input-camera-port").val();
-		newSettings["camera_trigger"] = 1;
-	}	
-	
-	if ($("#input-ttl-trigger").is(":checked") == false)
-	{	
-		if (isNumber($("#input-ttl-length").val()) == false)
-		{
-			errorMessage(getText("ttl_length_error"));
-			$("#input-ttl-length").addClass("iz-ip-error");
-			return;
-		}
-		newSettings["ttl_length"] = $("#input-ttl-length").val();
-		newSettings["ttl_trigger"] = 0;
-	}
-	else
-	{
-		newSettings["ttl_length"] = $("#input-ttl-length").val();
-		newSettings["ttl_trigger"] = 1;
-	}
-	if ($("#input-stop-trigger").is(":checked") == false)
-	{	
-		if (isNumber($("#input-stop-time").val()) == false)
-		{
-			errorMessage(getText("stop_time_error"));
-			$("#input-stop-time").addClass("iz-ip-error");
-			return;
-		}
-		newSettings["stop_time"] = $("#input-stop-time").val();
-		newSettings["stop_trigger"] = 0;
-	}
-	else
-	{
-		newSettings["stop_time"] = $("#input-stop-time").val();
-		newSettings["stop_trigger"] = 1;		
-	}
-	
-	// send the config 	
-	var request = $.ajax({
-		url: "savetrigger",		 	
-		type: "GET",
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",	
-		data: newSettings,
-		success: function (event)
-		{			
-			showTrigger(true);
-		},
-		error: function(xhr)
-		{				
-			errorMessage(getText("savetrigger_error"));			 
-		}
-		});
-	
-}
-
-function showTrigger(enableAlert)
-{
-	$.ajax
-	({
-		url: "showtrigger",		 	
-		type: "GET",
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",	
-		success: function (event)
-		{			
-			$("#input-set-no-vehicle").val(event.set_no_vehicle);
-			$("#input-camera-ip").val(event.camera_ip);
-			$("#input-camera-port").val(event.camera_port);
-			event.camera_trigger == "1"?$("#input-camera-trigger").prop('checked', true): $("#input-camera-trigger").prop('checked', false);
-			disableTrigger("input-camera-trigger");
-			$("#input-ttl-length").val(event.ttl_length);
-			event.ttl_trigger == "1"?$("#input-ttl-trigger").prop('checked', true): $("#input-ttl-trigger").prop('checked', false);
-			disableTrigger("input-ttl-trigger");
-			$("#input-stop-time").val(event.stop_time);
-			event.stop_trigger == "1"?$("#input-stop-trigger").prop('checked', true): $("#input-stop-trigger").prop('checked', false);
-			disableTrigger("input-stop-trigger");
-			if (enableAlert == true)
-			{
-				okMessage(getText("ok_save_trigger"));
-				rebootDevice();
+							for (var key in zip.files) {
+								var n = 0;
+								filename[i] = key;
+								i++;
+								abc = zip.file(key).async('uint8array')
+								.then(function(data) {
+									content[n] = data;
+									n++;
+									return [filename, content];
+								})
+							}
+							return abc;
+						})
+					stringfile.then(function(files) {
+						var x = 0;
+						var arrayOfFilenames = files[0];
+						var arrayOfContents = files[1];
+						// console.log(arrayOfFilenames);
+						// console.log(arrayOfContents);
+						$("#your-files").attr("type", "button");
+						$(".choosefile").text("Upload Files");
+						$(".filename").append(name);
+						$(".filename").css({margin: "18px 5px"}); 
+						$("#your-files").click(function() {
+							for (var i = 0; i < arrayOfFilenames.length; i++) {
+								uploadFile(arrayOfFilenames[i], arrayOfContents[i]);
+							}
+							createTable();
+							x++;
+							if (x == 1) {
+								$(".choosefile").text("Choose Firmware File");
+								$(".filename").empty();
+								//$(".filename").append('Loading...');
+								$( "#your-files").unbind( "click" );
+								x = 0;
+							}
+						});
+					});
+				}
+					
+					
 			}
-		},
-		error: function(xhr)
-		{				
-			errorMessage(getText("gettrigger_error"));			 
-		}
-	})
-}
 
-function errorMessage(text)
-{
-	var modal = $("#error-message-box");
-	var close = $("#error-message-close");
-	modal.css("display", "block");
-	$("#error-message-text").text(text);
-	close.click(function() {modal.css("display", "none");});
-}
-
-function okMessage(text)
-{
-	var modal = $("#ok-message-box");
-	var close = $("#ok-message-close");
-	modal.css("display", "block");
-	$("#ok-message-text").text(text);
-	close.click(function() {modal.css("display", "none");});
-}
-
-function getText(textID)
-{
-	var lang = 0;
-	var text =
-	{
-		ip_error: ["You have entered invalid IP address!"],
-		username_error: ["Username is  missing. Please enter Username" ],
-		password_error: ["Password is missing. Please enter Password"],
-		savenetwork_error: ["Saving System and Network Configuration has Failed. Please try again"],
-		getnetwork_error: ["Failed to get System and Network Configuration"],
-		ok_save_networks: ["Network and System Configuration Saved. Robooting ..."],
-		web_port_error: ["Web Server Port must be a  number and configuired"],
-		ok_laser_on: ["Callibration Pointer is turned ON. Start Callibration"],
-		ok_laser_off: ["Callibration Pointer is turned OFF. Callibration is done"],
-		distance_error: ["Distance without a vehicle is not set. Run callibration and set the value"],
-		ttl_length_error: ["Trigger Time Length must be a number"],
-		stop_time_error: ["Stop time value must be a number"],
-		savetrigger_error: ["Failed to save the trigger configuration"],
-		ok_save_trigger:["Trigger Configuration Saved. Robooting ..."],
-		savetrigger_error: ["Saving Trigger Configuration has Failed. Please try again"],
-		gettrigger_error: ["Failed to get Trigger Configuration"],
-		port_number_error: ["Camera TCP/IP Port must be a number"]
 	}
-	return text[textID][lang];
-}
+	function uploadFile(filename, content) {
+		console.log(filename);
+		console.log(content);
+		var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'upload', true);
+		xhr.upload.onprogress = function(event) {
+			//$(".filename").empty();
+			//$(".filename").append(event.loaded + ' / ' + event.total);
+			//$(".filename").empty();
+  		}
+        xhr.onload = xhr.onerror = function() {
+			if (this.status == 200) {
+			$(".filename").append(filename + " loading complete<br>");
+			} else {
+			$(".filename").append("error " + this.status);
+			}
+		};
+        var formData = new FormData();
+        var blob = new Blob([content], {type: 'application/octet-stream'});
+        var fileOfBlob = new File([blob], filename)
+        formData.append('blob', fileOfBlob);
+        xhr.send(formData);
+	}
 
 </script>
 </div>

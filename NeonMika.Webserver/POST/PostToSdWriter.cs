@@ -125,9 +125,11 @@ namespace NeonMika.Webserver.POST
                     content_start_buff_length = 0;
                 }
 
-                Debug.Print("->" + new String(System.Text.Encoding.UTF8.GetChars(_buffer)) + "<--");
+                //Debug.Print("->" + new String(System.Text.Encoding.UTF8.GetChars(_buffer)) + "<--");
 
                 double_cr = FindDoubleCR(_buffer); //returns position number of the first byte after double cr
+                Debug.Print("->" + new String(System.Text.Encoding.UTF8.GetChars(_buffer, 0, double_cr)) + "<--");
+
                 if (double_cr != 0)
                 {
                     strLine = strLine + new String(System.Text.Encoding.UTF8.GetChars(_buffer, 0, double_cr));

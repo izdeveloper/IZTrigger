@@ -140,10 +140,10 @@ namespace LidarReader
            
 
             // ======================  DISABLE for DEBUG =======================
-             oThread.Start();
-            _inport.OnInterrupt += inport_OnInterrupt;
-            _oport.Write(false);
-            _inport.EnableInterrupt();
+            // oThread.Start();
+            //_inport.OnInterrupt += inport_OnInterrupt;
+            //_oport.Write(false);
+            //_inport.EnableInterrupt();
          //   _inport.DisableInterrupt();
             
             // ======================  DISABLE for DEBUG =======================

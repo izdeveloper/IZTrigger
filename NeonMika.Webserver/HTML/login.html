@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-family: sans-serif;
+            }
+
+            .box {
+                width: 350px;
+                margin: 150px auto;
+                background-color: white;
+                text-align: center;
+            }
+
+            .login {
+                width: 350px;
+                height: 235px;
+                border: 2px solid red;
+            }
+
+            .loginform {
+                margin-top: 50px;
+            }
+
+            .username {
+                height: 23px;
+                width: 260px;
+                border: 1px solid grey;
+                margin-bottom: 10px;
+                font-size: 15px;
+                padding-left: 5px;
+            }
+
+            .password {
+                font-size: 15px;
+                padding-left: 5px;
+                width: 260px;
+                height: 23px;
+                border: 1px solid grey;
+            }
+
+            .remember {
+                margin: 40px;
+                padding-left: 95px;
+                vertical-align: center;
+            }
+
+            .checkbox {
+                float: left;
+            }
+
+            .text {
+                margin-left: 0;
+                font-size: 13px;
+            }
+
+            .button {
+                position: relative;
+                bottom: 30px;
+                width: 250px;
+                height: 30px;
+                margin: 0 auto;
+                background: url("button.png") no-repeat center center;
+            }
+            .button:hover {
+                cursor: pointer;
+                color: red;
+                text-decoration: underline;
+            }
+
+            .buttontext {
+                position: relative;
+                top: 8px;
+                font-weight: bold;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <img src="logo.png"></img>
+            <div class="login">
+                <form class="loginform">
+                    <input class="username" type="text" placeholder="Username"/>
+                    <input class="password" type="password" placeholder="Password"/>
+                    <div class="remember">
+                        <input class="checkbox" type="checkbox"/>
+                        <p class="text">Remember my username</p>
+                    </div>
+                    <div class="button">
+                        <p class="buttontext">LOGIN</p>
+                    </div>
+                </form>
+                
+            </div>
+            
+        </div>
+    </body>
+</html>

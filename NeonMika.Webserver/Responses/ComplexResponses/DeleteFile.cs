@@ -8,11 +8,12 @@ using FastloadMedia.NETMF.Http;
 
 namespace NeonMika.Webserver.Responses.ComplexResponses
 {
-    class DeleteFile: NeonMika.Webserver.Responses.JSONResponse
+    class DeleteFile : NeonMika.Webserver.Responses.JSONResponse
     {
         private DeleteFileResponse _deleteFileResponse;
 
-        public DeleteFile(string indexPage): base(indexPage, (JSONResponseMethodObject) null)
+        public DeleteFile(string indexPage)
+            : base(indexPage, (JSONResponseMethodObject)null)
         {
             _deleteFileResponse = new DeleteFileResponse();
             setResponseMethodObject(_deleteFileResponse.deleteFile);
@@ -26,20 +27,19 @@ namespace NeonMika.Webserver.Responses.ComplexResponses
             string filePath = "\\SD";
             Hashtable reqOnDelete = e.GetArguments;
 
-            System.IO.DirectoryInfo di = new DirectoryInfo(filePath);
+            string filename = (string)reqOnDelete["param"];
 
-            foreach (FileInfo file in di.GetFiles())
-            {                
-                foreach(string item in reqOnDelete.Values)
-                {                    
-                    if(file.Name.Equals(item))               
-                    {
-                        Debug.Print("Deleting file: " + file.FullName.ToString());
-                        file.Delete();
-                    }
+
+
+            if (filename != null)
+            {
+                string fullname = filePath + "\\" + filename;
+                if (File.Exists(fullname))
+                {
+                    Debug.Print("Deleting file: " + fullname);
+                    File.Delete(fullname);
                 }
             }
-
         }
     }
 }
